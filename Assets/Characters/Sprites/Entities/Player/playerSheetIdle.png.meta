@@ -1,0 +1,121 @@
+fileFormatVersion: 2
+guid: d7eed0d1899b91041983fa7112066bdb
+TextureImporter:
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings:
+  - buildTarget: iPhone
+    maxTextureSize: 1024
+    textureFormat: -2
+    compressionQuality: 50
+  spriteSheet:
+    sprites:
+    - name: playerSheetIdle_0
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 575
+        width: 61
+        height: 28
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: playerSheetIdle_1
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 572
+        width: 62
+        height: 31
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: playerSheetIdle_2
+      rect:
+        serializedVersion: 2
+        x: 263
+        y: 571
+        width: 61
+        height: 32
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: playerSheetIdle_3
+      rect:
+        serializedVersion: 2
+        x: 372
+        y: 571
+        width: 61
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: playerSheetIdle_4
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 509
+        width: 61
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: playerSheetIdle_5
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 509
+        width: 62
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: playerSheetIdle_6
+      rect:
+        serializedVersion: 2
+        x: 268
+        y: 508
+        width: 62
+        height: 30
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: playerSheetIdle_7
+      rect:
+        serializedVersion: 2
+        x: 377
+        y: 508
+        width: 62
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+  spritePackingTag: 
+  userData: 

@@ -48,8 +48,8 @@ TextureImporter:
     - name: playerSheet_0
       rect:
         serializedVersion: 2
-        x: 31
-        y: 551
+        x: 23
+        y: 580
         width: 61
         height: 28
       alignment: 0
@@ -57,8 +57,8 @@ TextureImporter:
     - name: playerSheet_1
       rect:
         serializedVersion: 2
-        x: 132
-        y: 548
+        x: 116
+        y: 577
         width: 61
         height: 32
       alignment: 0
@@ -66,8 +66,8 @@ TextureImporter:
     - name: playerSheet_2
       rect:
         serializedVersion: 2
-        x: 236
-        y: 547
+        x: 208
+        y: 571
         width: 61
         height: 38
       alignment: 0
@@ -75,35 +75,44 @@ TextureImporter:
     - name: playerSheet_3
       rect:
         serializedVersion: 2
-        x: 337
-        y: 552
-        width: 61
-        height: 30
+        x: 296
+        y: 576
+        width: 60
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
     - name: playerSheet_4
       rect:
         serializedVersion: 2
-        x: 32
-        y: 471
+        x: 370
+        y: 576
         width: 61
-        height: 32
+        height: 30
       alignment: 0
       pivot: {x: 0, y: 0}
     - name: playerSheet_5
       rect:
         serializedVersion: 2
-        x: 135
-        y: 467
+        x: 24
+        y: 512
         width: 61
-        height: 43
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
     - name: playerSheet_6
       rect:
         serializedVersion: 2
-        x: 244
-        y: 475
+        x: 118
+        y: 510
+        width: 61
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: playerSheet_7
+      rect:
+        serializedVersion: 2
+        x: 214
+        y: 516
         width: 61
         height: 32
       alignment: 0

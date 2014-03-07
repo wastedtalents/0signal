@@ -61,7 +61,7 @@ namespace Characters {
 		// Move player and change opacity of layers above.
 		private void MovePlayer() {
 			_rigidBody2D.velocity = new Vector2(_moveX * flSpeed, _moveY * flSpeed);
-			_rotation = LookHelper.SmoothLookAtMouse(transform, 0.05f, -90);
+			_rotation = LookHelper.SmoothLookAtMouse(transform, 0.05f, Registry.ENTITY_SPRITE_OFFSET);
 		//	_head.transform.rotation = _rotation;
 
 			_tempVector.x = transform.position.x;

@@ -74,7 +74,7 @@ namespace ZS.Characters {
 
     	// Actually turn to face the target.
     	private void TurnToTarget() {
-        if(!LookHelper.SmoothLookAtUntil(transform, _destination, rotateSpeed, -90, .4f)) {
+        if(!LookHelper.SmoothLookAtUntil(transform, _destination, rotateSpeed, Registry.ENTITY_SPRITE_OFFSET, .4f)) {
           _moving = true;
           _rotating = false;
         }

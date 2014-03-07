@@ -17,6 +17,9 @@ namespace ZS.Engine {
 		public const string ORGANIC_ICON_NAME = "organic";
 		public const string SYNTHETIC_ICON_NAME = "synthetic";
 
+		public const float ENTITY_SPRITE_OFFSET = 90f;
+
+
 		// ACTIONS.
 		public const string ACTION_ATTACK = "A_Attack";
 

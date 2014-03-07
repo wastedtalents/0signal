@@ -48,35 +48,35 @@ TextureImporter:
     - name: playerSheetIdle_0
       rect:
         serializedVersion: 2
-        x: 27
-        y: 575
+        x: 21
+        y: 583
         width: 61
         height: 28
       alignment: 0
-      pivot: {x: .5, y: .5}
+      pivot: {x: 0, y: 0}
     - name: playerSheetIdle_1
       rect:
         serializedVersion: 2
-        x: 143
-        y: 572
-        width: 62
-        height: 31
+        x: 115
+        y: 578
+        width: 61
+        height: 30
       alignment: 0
-      pivot: {x: .5, y: .5}
+      pivot: {x: 0, y: 0}
     - name: playerSheetIdle_2
       rect:
         serializedVersion: 2
-        x: 263
-        y: 571
+        x: 207
+        y: 580
         width: 61
         height: 32
       alignment: 0
-      pivot: {x: .5, y: .5}
+      pivot: {x: 0, y: 0}
     - name: playerSheetIdle_3
       rect:
         serializedVersion: 2
-        x: 372
-        y: 571
+        x: 297
+        y: 580
         width: 61
         height: 30
       alignment: 0
@@ -84,8 +84,8 @@ TextureImporter:
     - name: playerSheetIdle_4
       rect:
         serializedVersion: 2
-        x: 26
-        y: 509
+        x: 29
+        y: 525
         width: 61
         height: 28
       alignment: 0
@@ -93,28 +93,28 @@ TextureImporter:
     - name: playerSheetIdle_5
       rect:
         serializedVersion: 2
-        x: 143
-        y: 509
-        width: 62
+        x: 124
+        y: 526
+        width: 64
         height: 29
       alignment: 0
       pivot: {x: 0, y: 0}
     - name: playerSheetIdle_6
       rect:
         serializedVersion: 2
-        x: 268
-        y: 508
+        x: 216
+        y: 528
         width: 62
-        height: 30
+        height: 32
       alignment: 0
       pivot: {x: .5, y: .5}
     - name: playerSheetIdle_7
       rect:
         serializedVersion: 2
-        x: 377
-        y: 508
+        x: 308
+        y: 528
         width: 62
-        height: 29
+        height: 30
       alignment: 0
       pivot: {x: 0, y: 0}
   spritePackingTag: 

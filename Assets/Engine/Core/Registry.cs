@@ -7,6 +7,12 @@ namespace ZS.Engine {
 	// Object registry.
 	public class Registry : Singleton<Registry>, IInitializable {
 
+		public static class Sizes { 
+
+			public const int AUDIO_OBJECTS = 20;
+
+		}
+
 		public const string GROUND_NAME = "Background";
 		public readonly KeyCode TOGGLE_OPS_KEY = KeyCode.T;
 		public float CEILING_LAYER_Z ;
@@ -34,6 +40,9 @@ namespace ZS.Engine {
 		public float cameraScrollOffset = 15f;
 		public float cameraScrollSpeed = 25f;
 
+		// debug.
+		public bool showDebugBounds;
+
 		// icons.
 		public const int ICON_WIDTH = 32;
 		public const int ICON_HEIGHT = 32;
@@ -50,6 +59,9 @@ namespace ZS.Engine {
 		public int playerStartFood = 10;
 
 		public int buildingBuildSpeed;
+
+		// Audio
+		public float minFallOffRange = 10;
 
 		[HideInInspector]
 		public Transform mainCameraTransform;

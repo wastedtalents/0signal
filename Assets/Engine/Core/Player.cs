@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 
 namespace ZS.Engine { 
@@ -61,8 +61,11 @@ namespace ZS.Engine {
 		}
 
 		// Add a unit for the player.
-		public void AddUnit(string unitName, Vector3 SpawnPoint, Quaternion rotation) {
-    		Debug.Log ("add " + unitName + " to player");
+		public void AddUnit(string unitName, Vector3 spawnPoint, Quaternion rotation) {
+			// Actually add the unit.
+		    var units = GetComponentInChildren< PlayerUnits >();
+			var newUnit = (GameObject)Instantiate(EntityRepository.Instance.GetMovingUnit(unitName),spawnPoint, rotation);
+			newUnit.transform.parent = units.transform;
 		}		
 	}
 

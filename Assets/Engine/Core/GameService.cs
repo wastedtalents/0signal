@@ -27,6 +27,15 @@ namespace ZS.Engine {
 			SetOpsMode(false);
 		}
 
+		// Is entity owned by current player.
+		public bool IsOwnedByPlayer(Entity entity) {
+			return entity != null && entity.Owner == Registry.Instance.player;
+		}
+
+		public bool IsSelectedObjectOwnerByPlayer() {
+			return IsOwnedByPlayer(selectedObject);
+		}
+
 		public void SetOpsMode(bool isTactical) {
 			if(_isTactical == isTactical)
 				return;

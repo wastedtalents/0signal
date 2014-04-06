@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.Collections.Generic;
 using ZS.Engine;
+using ZS.Characters;
 using ZS.Engine.Peripherials;
 using System.Collections.ObjectModel;
+using ZS.Entities.Factories;
 
 namespace ZS.HUD {
 
@@ -23,6 +25,10 @@ namespace ZS.HUD {
 
 		#region Textures.
 
+		// Button hover on element.
+		public Texture2D buttonHover, buttonClick;
+		public Texture2D buildFrame, buildMask;
+
 		public Texture2D[] resources;
 		public Texture2D activeCursor;
 		public Texture2D selectCursor, leftCursor, rightCursor, upCursor, downCursor;
@@ -38,9 +44,17 @@ namespace ZS.HUD {
 		public GUISkin resourceSkin, ordersSkin, selectBoxSkin, mouseCursorSkin;
 		public bool _insideWidth, _insideHeight;
 
+		private GUIStyle _buttonsStyle;
+
 		public int gui_ordersBarWidth = 150;
 		public int gui_resourcesBarHeight = 40;
 		public int gui_selectionNameHeight = 30;
+
+		public int gui_buildImageWidth = 64, 
+				   gui_buildImageHeight = 64,
+				   gui_buttonSpacing = 7,
+				   gui_scrollBarWidth = 22,
+				   gui_buildImagePadding = 8;
 
 		#endregion
 
@@ -50,9 +64,15 @@ namespace ZS.HUD {
 
 		#endregion
 
+		private int _buildAreaHeight = 0;
+		private Entity _lastSelection;
+		private float _sliderValue;
+
 		private CursorState _activeCursorState;
 		private int _currentFrame = 0;
 		private bool _mouseOverHud;
+
+		private int _tempVar1, _tempVar2;
 
 		// Use this for initialization
 		void Start () {
@@ -61,6 +81,8 @@ namespace ZS.HUD {
 			if(_resourceLimits == null)
 				_resourceLimits = new Dictionary< PlayerResourceType, int >();
 			_resourceImages = new Dictionary< PlayerResourceType, Texture2D > ();
+
+			_buildAreaHeight = Screen.height - gui_resourcesBarHeight - gui_selectionNameHeight - 2 * gui_buttonSpacing;
 
 			InitResources();
 			SetArcadeMode();
@@ -102,27 +124,134 @@ namespace ZS.HUD {
 		// Draws the orders bar.
 		private void DrawOrders() {
 			GUI.skin = ordersSkin;
-	  		GUI.BeginGroup(new Rect(Screen.width - gui_ordersBarWidth , 
-	  			gui_resourcesBarHeight, gui_ordersBarWidth,
-	  			Screen.height - gui_resourcesBarHeight));
-	  		GUI.Box(new Rect(0,0, gui_ordersBarWidth , Screen.height - gui_resourcesBarHeight),"");
+	  		// GUI.BeginGroup(new Rect(Screen.width - gui_ordersBarWidth , 
+	  		// 	gui_resourcesBarHeight, gui_ordersBarWidth,
+	  		// 	Screen.height - gui_resourcesBarHeight));
+	  		GUI.BeginGroup(new Rect(Screen.width-gui_ordersBarWidth- gui_buildImageWidth,
+	  			gui_resourcesBarHeight,
+	  			gui_ordersBarWidth+gui_buildImageWidth,
+	  			Screen.height- gui_resourcesBarHeight));
+
+			GUI.Box(new Rect(gui_buildImageWidth+gui_scrollBarWidth,0,
+				gui_ordersBarWidth,Screen.height- gui_resourcesBarHeight), "");
+
+	  		//GUI.Box(new Rect(0,0, gui_ordersBarWidth , Screen.height - gui_resourcesBarHeight),"");
 
 			// Draw selected player.
 			var selectionName = "";
 			if(GameService.Instance.selectedObject != null) {
     			selectionName = GameService.Instance.selectedObject.displayName;
 			}
+			// if(!selectionName.Equals("")) {
+   //  			int topPos = _buildAreaHeight + gui_buttonSpacing;
+   // 				GUI.Label(new Rect(0,topPos,gui_ordersBarWidth,gui_selectionNameHeight), selectionName);
+			// }   		
 			if(!selectionName.Equals("")) {
-    			GUI.Label(new Rect(4,10, gui_ordersBarWidth, 
-    				gui_selectionNameHeight), selectionName);
-			}	   		
+			    int leftPos = gui_buildImageWidth + gui_scrollBarWidth / 2;
+			    int topPos = _buildAreaHeight + gui_buttonSpacing;
+			    GUI.Label(new Rect(leftPos,topPos,gui_ordersBarWidth,gui_selectionNameHeight), selectionName);
+			}
+
+			// If selected object is owned by current player..
+			if(GameService.Instance.IsSelectedObjectOwnerByPlayer()) {
+    			//reset slider value if the selected object has changed
+    			if(_lastSelection && _lastSelection != GameService.Instance.selectedObject) 
+    				_sliderValue = 0.0f;
+    			DrawActions(GameService.Instance.selectedObject.GetActions());
+    			//store the current selection
+    			_lastSelection = GameService.Instance.selectedObject;
+
+    			var selectedFactory = _lastSelection.GetComponent< UnitFactory >();
+				if(selectedFactory != null) {
+    				DrawBuildQueue(selectedFactory.GetBuildQueueValues(), 
+    					selectedFactory.GetUnitBuildPercentage());
+				}
+			}	
 
 	   		GUI.EndGroup();
 		}
 
+		// Draw building queue.
+		private void DrawBuildQueue(string[] buildQueue, float buildPercentage) {
+			for(int i = 0; i < buildQueue.Length; i++) {
+				float topPos = i * gui_buildImageHeight - (i+1) * gui_buildImagePadding;
+				var buildPos = new Rect(gui_buildImagePadding,topPos,gui_ordersBarWidth,gui_buildImageHeight);
+				GUI.DrawTexture(buildPos,EntityRepository.Instance.GetBuildImage(buildQueue[i]));
+				GUI.DrawTexture(buildPos,buildFrame);
+				topPos += gui_buildImagePadding;
+				float width = gui_ordersBarWidth - 2 * gui_buildImagePadding;
+				float height = gui_buildImageHeight - 2 * gui_buildImagePadding;
+				if(i==0) {
+					topPos += height * buildPercentage;
+					height *= (1 - buildPercentage);
+				}
+				GUI.DrawTexture(new Rect(2 * gui_buildImagePadding,topPos,width,height),buildMask);
+			}
+		}
+
+		// Draw actions for object.
+		private void DrawActions(string[] actions) {
+   			GUI.skin.button = _buttonsStyle;
+
+    		//define the area to draw the actions inside
+   			var numActions = actions.Length;
+    		//GUI.BeginGroup(new Rect(0,0, gui_ordersBarWidth, _buildAreaHeight));
+			GUI.BeginGroup(new Rect(gui_buildImageWidth,0,gui_ordersBarWidth, _buildAreaHeight));
+
+    		//draw scroll bar for the list of actions if need be
+    		if(numActions > MaxNumRows(_buildAreaHeight)) 
+    			DrawSlider(_buildAreaHeight, numActions / 2.0f);
+
+    		//display possible actions as buttons and handle the button click for each
+    		for(var i = 0; i < numActions; i++) {
+        		_tempVar1 = i % 2; // column
+        		_tempVar2 = i / 2; // row
+        		var pos = GetButtonPos(_tempVar2, _tempVar1);
+		        var action = EntityRepository.Instance.GetBuildImage(actions[i]);	
+		        if(action != null) {
+		        	if (GUI.Button(pos, action)) {
+                		if(GameService.Instance.selectedObject != null) {
+                			GameService.Instance.selectedObject.PerformAction(null, null, actions[i]);
+                		}
+            		}
+        		}
+    		}
+    		GUI.EndGroup();
+		}
+
+		// Count max number of rows.
+		private int MaxNumRows(int areaHeight) {
+		    return areaHeight / gui_buildImageHeight;
+		}
+ 
+ 		// Get position of a button in row.
+ 		// TODO : refactor.
+		private Rect GetButtonPos(int row, int column) {
+			return new Rect(gui_scrollBarWidth + column * gui_buildImageWidth,
+				row * gui_buildImageHeight - _sliderValue * gui_buildImageHeight,
+				gui_buildImageWidth,
+				gui_buildImageHeight);
+		    // return new Rect(column * gui_buildImageWidth, 
+		    // 	row * gui_buildImageHeight - _sliderValue * gui_buildImageHeight,
+		    // 	gui_buildImageWidth,
+		    // 	gui_buildImageHeight);
+		}
+
+		// Draw a slider. 
+		private void DrawSlider(int groupHeight, float numRows) {
+		    //slider goes from 0 to the number of rows that do not fit on screen
+		    _sliderValue = GUI.VerticalSlider(GetScrollPos(groupHeight),_sliderValue,0.0f,
+		    	numRows - MaxNumRows(groupHeight));
+		}
+
+		// Get scroll position.
+		private Rect GetScrollPos(int groupHeight) {
+    		return new Rect(gui_buttonSpacing, gui_buttonSpacing, gui_scrollBarWidth,
+    			groupHeight - 2 * gui_buttonSpacing);
+		}
+
 		// Initialize resources like icons.
 		private void InitResources() {
-			Debug.Log("ss " + resources.Length);
 			for(int i = 0; i < resources.Length; i++) {
     			switch(resources[i].name) {
         			case Registry.FOOD_ICON_NAME:
@@ -138,6 +267,11 @@ namespace ZS.HUD {
         				break;
     			}
 			}
+
+			// Setup SKins and styles.
+			_buttonsStyle = new GUIStyle();
+			_buttonsStyle.hover.background = buttonHover;
+    		_buttonsStyle.active.background = buttonClick;
 		}
 
 		public bool PointInClientBounds(Vector3 point) {

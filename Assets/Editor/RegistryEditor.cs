@@ -2,7 +2,7 @@
 using UnityEditor;
 using System.Collections;
 
-namespace ZS.Engine { 
+namespace ZS.Engine.Unity { 
 
 	[CustomEditor(typeof(Registry))]
 	public class RegistryEditor : Editor {
@@ -12,8 +12,11 @@ namespace ZS.Engine {
 		private const string CAMERA_TAB = "Camera Settings";
 		private const string ICONS_TAB = "GUI Settings";
 		private const string SETTINGS_TAB = "Player Settings";
+		private const string AUDIO_TAB = "Audio Settings";
+		private const string DEBUG_TAB = "Debug Settings";
 
-		private bool _showResourceLimits, _showResourceStarts, _showCameraTab, _showIconsTab, _showPlayerSettingsTab;
+		private bool _showResourceLimits, _showResourceStarts, _showCameraTab, _showIconsTab, 
+		_showAudioTab, _showPlayerSettingsTab, _showDebugTab;
 		private Registry _target;
 
 		public override void OnInspectorGUI() {
@@ -25,6 +28,8 @@ namespace ZS.Engine {
 			CreateCameraTab();
 			CreateGUITab();
 			CreatePlayerSettingsTab();
+			CreateAudioTab();
+			CreateDebugTab();
 		}
 
 		private void CreatePlayerSettingsTab() {
@@ -56,6 +61,25 @@ namespace ZS.Engine {
 			}
 		}
 
+		private void CreateAudioTab() {
+			_showAudioTab = EditorGUILayout.Foldout(_showAudioTab, AUDIO_TAB);
+			if(_showAudioTab) {
+				if(Selection.activeTransform) {
+					_target.minFallOffRange = EditorGUILayout.FloatField("Min fall-off : " , _target.minFallOffRange);
+				}
+			}
+		}
+
+		//showDebugBounds
+		public void CreateDebugTab() {
+			_showDebugTab = EditorGUILayout.Foldout(_showDebugTab, DEBUG_TAB);
+			if(_showDebugTab) {
+				if(Selection.activeTransform) {
+					_target.showDebugBounds = EditorGUILayout.Toggle("Show debug gizmo : " , _target.showDebugBounds);
+				}
+			}
+		}
+	
 		private void CreateCameraTab() {
 			_showCameraTab = EditorGUILayout.Foldout(_showCameraTab, CAMERA_TAB);
 			if(_showCameraTab) {

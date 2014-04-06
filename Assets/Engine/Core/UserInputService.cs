@@ -5,6 +5,7 @@ using ZS.Characters;
 using ZS.Engine.Cam;
 using ZS.Engine.Peripherials;
 using ZS.HUD;
+using ZS.Engine.Audio;
 
 namespace ZS.Engine { 
 
@@ -17,7 +18,7 @@ namespace ZS.Engine {
 
 		// Update.
 		void Update () {
-			ParseMouseActivity();			
+			ParseMouseActivity();		
 		}
 			
 		// Parse activity related to mouse which is global.
@@ -30,12 +31,16 @@ namespace ZS.Engine {
 
 	    		MouseHover();
 	    	} 
+	   //  	else if(Input.GetMouseButtonDown(0)) // In non tactical check if we clicked
+				// HandleBullets();
+	   //  	}
 		}
 
 		// Left button was pressed in tactical mode.
 		private void TacticalLeftButtonDown() {
 			 if(Registry.Instance.hudManager.PointInClientBounds(InputService.Instance.MousePosition)) {
 			        _hitObject = CameraManager.Instance.FindHitObject(InputService.Instance.MousePosition, out _tempVector);			        
+			        
 			        // If nothing was hit or an illegal point was hit, do nothing.
 			        if(_tempVector == Registry.Instance.invalidHitPoint) { // we dont care. 
 						if(GameService.Instance.selectedObject != null) {

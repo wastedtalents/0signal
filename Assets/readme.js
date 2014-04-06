@@ -72,5 +72,9 @@ zalatwia peryferia
 HUDManager
 zarzadza HUDem
 
+----------------
+
+EntityRepository - zawiera wszystkie obiekty i prefaby dostepne w grze
+
 
 */

@@ -18,7 +18,8 @@ namespace ZS.HUD {
 		PanRight, 
 		PanUp, 
 		PanDown, 
-		Harvest 
+		Harvest,
+		Rally
 	}
 
 	public class HUDManager : MonoBehaviour {
@@ -33,6 +34,10 @@ namespace ZS.HUD {
 		public Texture2D activeCursor;
 		public Texture2D selectCursor, leftCursor, rightCursor, upCursor, downCursor;
 		public Texture2D[] moveCursors, attackCursors, harvestCursors;
+
+		public Texture2D smallButtonHover, smallButtonClick, rallyPointImage;
+		public Texture2D sellImage;
+		public Texture2D rallyPointCursor;
 
 		#endregion
 
@@ -69,6 +74,8 @@ namespace ZS.HUD {
 		private float _sliderValue;
 
 		private CursorState _activeCursorState;
+		private CursorState _previousCursorState;
+
 		private int _currentFrame = 0;
 		private bool _mouseOverHud;
 
@@ -119,7 +126,7 @@ namespace ZS.HUD {
     			_resourceLimits[type].ToString());
     		GUI.DrawTexture(new Rect(iconLeft, topPos, Registry.ICON_WIDTH, Registry.ICON_HEIGHT), icon);
     		GUI.Label (new Rect(textLeft, topPos, Registry.TEXT_WIDTH, Registry.TEXT_HEIGHT), text);
-		}
+		 }
 
 		// Draws the orders bar.
 		private void DrawOrders() {
@@ -165,17 +172,54 @@ namespace ZS.HUD {
 				if(selectedFactory != null) {
     				DrawBuildQueue(selectedFactory.GetBuildQueueValues(), 
     					selectedFactory.GetUnitBuildPercentage());
+    				DrawStandardBuildingOptions(selectedFactory);
 				}
 			}	
 
 	   		GUI.EndGroup();
 		}
 
+		// Gets current active state.
+		public CursorState GetCursorState() {
+			return _activeCursorState;
+		}
+
+		// Draw building options.
+		private void DrawStandardBuildingOptions(UnitFactory building) {
+			GUIStyle buttons = new GUIStyle();
+
+			buttons.hover.background = smallButtonHover;
+			buttons.active.background = smallButtonClick;
+			GUI.skin.button = buttons;
+
+			int leftPos = gui_buildImageWidth + gui_scrollBarWidth + gui_buttonSpacing;
+			int topPos = _buildAreaHeight - gui_buildImageHeight / 2;
+			int width = gui_buildImageWidth / 2;
+			int height = gui_buildImageHeight / 2;
+
+			if(GUI.Button(new Rect(leftPos, topPos, width, height), sellImage)) {
+    			building.Sell();
+			}
+			if(building.HasSpawnPoint()) {
+				leftPos += width + gui_buttonSpacing;
+				if(GUI.Button(new Rect(leftPos, topPos, width, height), rallyPointImage)) {
+					if(_previousCursorState != CursorState.Rally && 
+						_activeCursorState != CursorState.Rally) 
+						SetCursorState(CursorState.Rally);
+					else {
+						SetCursorState(CursorState.PanRight);
+						SetCursorState(CursorState.Select);
+					}
+				}
+			}
+		}
+
 		// Draw building queue.
 		private void DrawBuildQueue(string[] buildQueue, float buildPercentage) {
 			for(int i = 0; i < buildQueue.Length; i++) {
 				float topPos = i * gui_buildImageHeight - (i+1) * gui_buildImagePadding;
-				var buildPos = new Rect(gui_buildImagePadding,topPos,gui_ordersBarWidth,gui_buildImageHeight);
+				var buildPos = new Rect(gui_buildImagePadding,topPos,gui_ordersBarWidth,
+					gui_buildImageHeight);
 				GUI.DrawTexture(buildPos,EntityRepository.Instance.GetBuildImage(buildQueue[i]));
 				GUI.DrawTexture(buildPos,buildFrame);
 				topPos += gui_buildImagePadding;
@@ -289,6 +333,10 @@ namespace ZS.HUD {
     		_resourceLimits = resourceLimits;
 		}
 
+		public CursorState GetPreviousCursorState() {
+		    return _previousCursorState;
+		}
+
 		// Gets the actual PLAYING area.
 		public Rect GetPlayingArea() {
     		return new Rect(0, gui_resourcesBarHeight, Screen.width - gui_ordersBarWidth, 
@@ -348,6 +396,8 @@ namespace ZS.HUD {
         			topPos -= activeCursor.height / 2;
         			leftPos -= activeCursor.width / 2;
    				}
+   			else if(_activeCursorState == CursorState.Rally) 
+   				topPos -= activeCursor.height;
     		return new Rect(leftPos, topPos, activeCursor.width, activeCursor.height);
 		}
 
@@ -360,6 +410,7 @@ namespace ZS.HUD {
 		}
 
 		public void SetCursorState(CursorState newState) {
+    		_previousCursorState = _activeCursorState;
     		_activeCursorState = newState;
     		switch(newState) {
 			    case CursorState.Select:
@@ -389,6 +440,9 @@ namespace ZS.HUD {
     			case CursorState.PanDown:
         			activeCursor = downCursor;
         			break;
+        		case CursorState.Rally:
+    				activeCursor = rallyPointCursor;
+    				break;
     			default: break;
     		}
 		}

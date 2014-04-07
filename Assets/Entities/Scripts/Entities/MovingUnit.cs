@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using ZS.Engine;
 using ZS.HUD;
@@ -16,7 +16,7 @@ namespace ZS.Characters {
 		public float moveSpeed, rotateSpeed;
 
     #endregion
-
+        
 		protected bool _moving, _rotating;
 		private Vector3 _destination, _targetPosition;
 		private Quaternion _targetRotation;
@@ -57,15 +57,15 @@ namespace ZS.Characters {
 
 			var targetPosition = _destination - transform.position;
 			_targetRotation = Quaternion.LookRotation(targetPosition);
-
     		_targetPosition = _destination - transform.position;
+
     		_rotating = true;
-    		_moving = false;
+    		_moving = true;
     	}
 
     	// Update this unit.
     	protected override void Update() {
-			  base.Update();
+			base.Update();
     		if(_rotating) 
     			TurnToTarget();
     		else if(_moving) 
@@ -74,11 +74,11 @@ namespace ZS.Characters {
 
     	// Actually turn to face the target.
     	private void TurnToTarget() {
-        if(!LookHelper.SmoothLookAtUntil(transform, _destination, rotateSpeed, Registry.ENTITY_SPRITE_OFFSET, .4f)) {
-          _moving = true;
-          _rotating = false;
+            if(!LookHelper.SmoothLookAtUntil(transform, _destination, rotateSpeed, Registry.ENTITY_SPRITE_OFFSET, .4f)) {
+              _moving = true;
+              _rotating = false;
+            }
         }
-   		}
 
       private void MakeMove() {
         transform.position = Vector3.MoveTowards(transform.position, _destination, Time.deltaTime * moveSpeed);

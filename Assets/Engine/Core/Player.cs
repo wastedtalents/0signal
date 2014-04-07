@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using ZS.Characters;
 
 namespace ZS.Engine { 
 
@@ -17,6 +18,7 @@ namespace ZS.Engine {
 	public class Player : PlayerSettingsBase {
 		
 		public string username;
+		private RallyPoint _rallyPoint;
 		public PlayerType playerType; // Is this a current player or a different 
 
 		public Player() {
@@ -26,7 +28,16 @@ namespace ZS.Engine {
 		void Update () {
 		}
 
+		// Related rally point.
+		public RallyPoint RallyPoint { 
+			get { return _rallyPoint; }
+		}
+
+		// Recompile.
 		protected override void InitResources() {
+			_rallyPoint = (RallyPoint)gameObject.GetComponentInChildren(typeof(RallyPoint));
+			_rallyPoint.Disable();
+			
 			_resources = InitResourceList();
    			_resourceLimits = InitResourceList();
 		}
@@ -66,6 +77,11 @@ namespace ZS.Engine {
 		    var units = GetComponentInChildren< PlayerUnits >();
 			var newUnit = (GameObject)Instantiate(EntityRepository.Instance.GetMovingUnit(unitName),spawnPoint, rotation);
 			newUnit.transform.parent = units.transform;
+
+		    var unitObject = newUnit.GetComponent< MovingUnit >();
+    		if(unitObject != null && spawnPoint != _rallyPoint.transform.position) {
+    			unitObject.StartMoving(_rallyPoint.transform.position);
+    		}
 		}		
 	}
 

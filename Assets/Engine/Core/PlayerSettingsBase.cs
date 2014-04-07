@@ -21,7 +21,7 @@ namespace ZS.Engine {
 			InitResources();
 		}
 
-		protected void AddResource(PlayerResourceType type, int amount) {
+		public void AddResource(PlayerResourceType type, int amount) {
     		_resources[type] += amount;
 		}
  

@@ -48,9 +48,9 @@ namespace ZS.Characters {
 		}
 
 		// Set this object as selected.
-		public void SetSelection(SelectionType selection) {
+		public virtual void SetSelection(SelectionType selection) {
 		   _currentSelection = selection;
-		   if(_currentSelection != SelectionType.NotSelected)
+		   if(_currentSelection == SelectionType.Command)
  		   	 ShowSelection();
  		   else if(_selection != null)
  		   	 HideSelection();

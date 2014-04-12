@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using ZS.Characters;
 using System.Collections;
+using ZS.Engine;
 
 namespace ZS.Entities.Factories {
 
@@ -10,6 +11,9 @@ namespace ZS.Entities.Factories {
 		protected override void Start () {
      	    base.Start();
         	_actions = new string[] { "Drone" };
+
+        		var obj = ObjectFactory.Instance.GetObjectForType("plant3");
+			Debug.Log(obj);
     	}
 
     	// Perform an action.

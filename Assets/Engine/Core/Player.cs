@@ -26,6 +26,7 @@ namespace ZS.Engine {
 	
 		// Update is called once per frame
 		void Update () {
+		
 		}
 
 		// Related rally point.

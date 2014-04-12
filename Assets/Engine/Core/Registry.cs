@@ -13,6 +13,7 @@ namespace ZS.Engine {
 
 		}
 
+		public const string GLOBAL_POOL_NAME = "GlobalObjectPool";
 		public const string GROUND_NAME = "Background";
 		public readonly KeyCode TOGGLE_OPS_KEY = KeyCode.T;
 		public float CEILING_LAYER_Z ;
@@ -42,6 +43,9 @@ namespace ZS.Engine {
 
 		// debug.
 		public bool showDebugBounds;
+
+		// object creation.
+		public int defaultPoolSize = 10;
 
 		// icons.
 		public const int ICON_WIDTH = 32;
@@ -80,6 +84,9 @@ namespace ZS.Engine {
 
 		[HideInInspector]
 		public Vector3 invalidHitPoint;
+
+		[HideInInspector]
+		public ObjectFactory objectFactory;
 
 		[HideInInspector]
 		public Bounds invalidBounds;

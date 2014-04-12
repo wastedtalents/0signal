@@ -4,6 +4,26 @@
 		"selected_items":
 		[
 			[
+				"gui_",
+				"gui_buttonSpacing"
+			],
+			[
+				"euler",
+				"eulerAngles	Transform.*"
+			],
+			[
+				"gui_buildi",
+				"gui_buildImageHeight"
+			],
+			[
+				"buildAre",
+				"_buildAreaHeight"
+			],
+			[
+				"_",
+				"_rallyPoint"
+			],
+			[
 				"gui_bui",
 				"gui_buildImageHeight"
 			],
@@ -22,10 +42,6 @@
 			[
 				"buildP",
 				"buildPipeline	[class]"
-			],
-			[
-				"gui_",
-				"gui_ordersBarWidth"
 			],
 			[
 				"gui",
@@ -86,10 +102,6 @@
 			[
 				"hit",
 				"hitEntity"
-			],
-			[
-				"_",
-				"_selection"
 			],
 			[
 				"In",
@@ -227,8 +239,16 @@
 			"file": "Assets/Entities/Scripts/Controllers/PlayerAvatarController.cs",
 			"settings":
 			{
-				"buffer_size": 2822,
+				"buffer_size": 2885,
 				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Assets/Engine/Core/DebugShowSelf.cs",
+			"settings":
+			{
+				"buffer_size": 379,
+				"line_ending": "Unix"
 			}
 		},
 		{
@@ -240,21 +260,61 @@
 			}
 		},
 		{
-			"contents": "using UnityEngine;\nusing System.Collections.Generic;\nusing ZS.Characters;\nusing System.Linq;\nusing ZS.Engine;\n\nnamespace ZS.Entities.Factories { \n\n	// A building - drone factory.	\n	public abstract class UnitFactory : BuildableEntity {\n\n		public float maxUnitBuildProgress; // maximal building progress of a unit.\n		private float _currentUnitBuildProgress;\n		protected Queue< string > _buildQueue; // queue of buildings to be built.\n		private Vector3 _spawnPoint;\n\n/*\nAwake is used to initialize any variables or game state before the game starts. \nAwake is called only once during the lifetime of the script instance.\nAwake is called after all objects are initialized so you can safely speak to other objects or \nquery them using eg. GameObject.FindWithTag.\n*/\nvoid Awake() {\n			// float spawnX = selectionBounds.center.x + transform.forward.x * selectionBounds.extents.x + transform.forward.x * 10;\n			// float spawnZ = selectionBounds.center.z + transform.forward.z + selectionBounds.extents.z + transform.forward.z * 10;\n	_buildQueue = new Queue< string >();\n	var spawnX = transform.position.x;\n	var spawnY = transform.position.y;\n	_spawnPoint = new Vector3(spawnX, spawnY, 0.0f);\n}\n\nvoid Update() {\n	ProcessBuildQueue();\n}\n\n	public override void SetSelection(bool selected, Rect playingArea) {\n	    base.SetSelection(selected, playingArea);\n	    if(_owner != null) {\n	        var flag = _owner.GetComponentInChildren();\n	        if(selected) {\n	            if(flag && _owner.human && spawnPoint != ResourceManager.InvalidPosition && rallyPoint != ResourceManager.InvalidPosition) {\n	                flag.transform.localPosition = rallyPoint;\n	                flag.transform.forward = transform.forward;\n	                flag.Enable();\n	            }\n	        } else {\n	            if(flag && player.human) flag.Disable();\n	        }\n	    }\n	}\n\n		// Creates an unit.\nprotected void CreateUnit(string unitName) {\n	_buildQueue.Enqueue(unitName);\n}\n\n		// Processes the build queue.\nprotected void ProcessBuildQueue() {\n			// For all items.\n	if(_buildQueue.Count > 0) {\n		_currentUnitBuildProgress += Time.deltaTime * Registry.Instance.buildingBuildSpeed;\n\n       	// If build progress is ready - fire up a new unit.		\n		if(_currentUnitBuildProgress > maxBuildProgress) {\n			if(_owner != null) {				\n            	// Creates a new unit.\n				_owner.AddUnit(_buildQueue.Dequeue(), _spawnPoint, transform.rotation);\n				_currentUnitBuildProgress = 0.0f;\n			}\n		}\n	}\n}\n\n    	// Get build queue values.\npublic string[] GetBuildQueueValues() {\n	return _buildQueue.Select(s => s).ToArray();\n}\n\n		// Get build percentage of the building units.\npublic float GetUnitBuildPercentage() {\n	return _currentUnitBuildProgress / maxUnitBuildProgress;\n}\n}\n\n}\n",
-			"file": "Assets/Entities/Scripts/Entities/Factories/UnitFactory.cs",
-			"file_size": 2827,
-			"file_write_time": 130408553095727170,
+			"file": "Assets/HUD/Scripts/HUDManager.cs",
 			"settings":
 			{
-				"buffer_size": 2739,
+				"buffer_size": 15883,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "Assets/Entities/Scripts/Entities/BuildableEntity.cs",
+			"file": "Assets/Entities/Scripts/Entities/Factories/UnitFactory.cs",
 			"settings":
 			{
-				"buffer_size": 821,
+				"buffer_size": 4772,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "using UnityEngine;\nusing System.Collections;\nusing ZS.Engine;\n\nnamespace ZS.Characters { \n\n	// Simple resource.\n	public class Resource : Entity {\n\n		public float capacity;\n\n		protected float _amountLeft;\n		protected PlayerResourceType _resourceType;\n\n		public PlayerResourceType ResourceType { \n			get { return _resourceType; }\n		}\n\n		protected override void Start () {\n			base.Start();\n			_amountLeft = capacity;\n			_resourceType = PlayerResourceType.None;\n		}\n\n		public void Remove(float amount) {\n			_amountLeft -= amount;\n			if(_amountLeft < 0) \n				_amountLeft = 0;\n		}\n\n		public bool isDepleted() {\n			return _amountLeft <= 0;\n		}\n\n	}\n\n}",
+			"file": "Assets/Entities/Scripts/Entities/Resource.cs",
+			"file_size": -1,
+			"file_write_time": -1,
+			"settings":
+			{
+				"buffer_size": 643,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Assets/Entities/Resources/Scripts/Resource.cs",
+			"settings":
+			{
+				"buffer_size": 663,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Assets/Entities/Resources/Scripts/ResMetalDeposit.cs",
+			"settings":
+			{
+				"buffer_size": 1028,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Assets/Engine/Core/PlayerSettingsBase.cs",
+			"settings":
+			{
+				"buffer_size": 769,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Assets/Engine/Core/Player.cs",
+			"settings":
+			{
+				"buffer_size": 2583,
 				"line_ending": "Windows"
 			}
 		},
@@ -267,48 +327,14 @@
 			}
 		},
 		{
-			"file": "Assets/Entities/Scripts/Entities/Drone.cs",
+			"contents": "using UnityEngine;\nusing System.Collections;\n\npublic class DebugUtils : MonoBehaviour {\n\nvoid OnDrawGizmosSelected()\n    {\n        if (_renderer && EDITOR_SHOW_BOUNDS)\n        {\n            Gizmos.color = new Color(0.2f, 0.2f, 0.2f, 0.5f);\n            Gizmos.DrawWireCube(_renderer.bounds.center, _renderer.bounds.size);\n        }        \n    }\n\n	// Use this for initialization\n	void Start () {\n	\n	}\n	\n	// Update is called once per frame\n	void Update () {\n	\n	}\n}\n",
+			"file": "Assets/Engine/Core/DebugUtils.cs",
+			"file_size": -1,
+			"file_write_time": -1,
 			"settings":
 			{
-				"buffer_size": 256,
+				"buffer_size": 463,
 				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "using UnityEngine;\nusing System.Collections;\nusing ZS.Engine;\nusing ZS.HUD;\nusing ZS.Engine.Utilities;\n\nnamespace ZS.Characters {\n\n	// Basic unit / person that player can acquire.\n	// That can be an animal or a person.\n	public class MovingUnit : Entity {\n\n    #region Params.\n\n		// Move / rotate params.\n		public float moveSpeed, rotateSpeed;\n\n    #endregion\n        \n		protected bool _moving, _rotating;\n		private Vector3 _destination, _targetPosition;\n		private Quaternion _targetRotation;\n\n\n		// Override default hovering behavior.\n		public override void SetHoverState(GameObject hoverObject) {\n		    base.SetHoverState(hoverObject);\n\n		    // For units we can make them move.\n		    if(_currentSelection != SelectionType.NotSelected && Owner != null && Owner.playerType == PlayerType.Current) {\n				 if(hoverObject.tag == Registry.GROUND_NAME) {				 	\n		        	Registry.Instance.hudManager.SetCursorState(CursorState.Move);\n		         } \n			}\n		}\n\n		// Action was initiated.\n		public override void ActionInitiated(GameObject hitObject, Entity entity, Vector3 hitPoint) {\n			base.ActionInitiated(hitObject, entity, hitPoint);\n   			//only handle input if owned by a human player and currently selected\n    		if(_owner != null && _owner.playerType == PlayerType.Current && _currentSelection != SelectionType.NotSelected) {\n        		if(hitObject.tag == Registry.GROUND_NAME && \n        			hitPoint != Registry.Instance.invalidHitPoint) {\n            		_tempVector.x = hitPoint.x;\n            		_tempVector.y = hitPoint.y;\n            		_tempVector.z = hitPoint.z;\n\n            		// Start moving in this position.\n            		StartMoving(_tempVector);\n        		}\n    		}\n		}\n\n		// Starts moving.\n		public void StartMoving(Vector3 destination) {\n 		   	_destination = destination;\n\n			var targetPosition = _destination - transform.position;\n			_targetRotation = Quaternion.LookRotation(targetPosition);\n\n    		_targetPosition = _destination - transform.position;\n    		_rotating = true;\n    		_moving = false;\n    	}\n\n    	// Update this unit.\n    	protected override void Update() {\n			  base.Update();\n    		if(_rotating) \n    			TurnToTarget();\n    		else if(_moving) \n    		 	MakeMove();\n    	}\n\n    	// Actually turn to face the target.\n    	private void TurnToTarget() {\n        if(!LookHelper.SmoothLookAtUntil(transform, _destination, rotateSpeed, Registry.ENTITY_SPRITE_OFFSET, .4f)) {\n          _moving = true;\n          _rotating = false;\n        }\n   		}\n\n      private void MakeMove() {\n        transform.position = Vector3.MoveTowards(transform.position, _destination, Time.deltaTime * moveSpeed);\n        if(transform.position == _destination) \n          _moving = false;        \n      }\n\n	}\n\n}",
-			"file": "Assets/Entities/Scripts/Entities/MovingUnit.cs",
-			"file_size": 2798,
-			"file_write_time": 130386945871267579,
-			"settings":
-			{
-				"buffer_size": 2713,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"contents": "Searching 324 files for \"DrawActions\"\n\nC:\\dev\\0SignalLatest\\Assets\\HUD\\Scripts\\HUDManager.cs:\n  142      			if(_lastSelection && _lastSelection != GameService.Instance.selectedObject) \n  143      				_sliderValue = 0.0f;\n  144:     			DrawActions(GameService.Instance.selectedObject.GetActions());\n  145      			//store the current selection\n  146      			_lastSelection = GameService.Instance.selectedObject;\n  ...\n  151  \n  152  		// Draw actions for object.\n  153: 		private void DrawActions(string[] actions) {\n  154     			GUI.skin.button = _buttonsStyle;\n  155  \n\n2 matches in 1 file\n\n\nSearching 324 files for \"CreateUnit\"\n\nC:\\dev\\0SignalLatest\\Assets\\Entities\\Scripts\\Entities\\Factories\\DroneFactory.cs:\n   17      		base.PerformAction(targetObject, targetEntity, actionToPerform);\n   18      		// Whatever the action - create a new unit.\n   19:     		CreateUnit(actionToPerform);\n   20      	}\n   21  \n\nC:\\dev\\0SignalLatest\\Assets\\Entities\\Scripts\\Entities\\Factories\\UnitFactory.cs:\n   35  \n   36  		// Creates an unit.\n   37: protected void CreateUnit(string unitName) {\n   38  	_buildQueue.Enqueue(unitName);\n   39  }\n\n2 matches across 2 files\n\n\nSearching 328 files for \"GameObject[]\"\n\nC:\\dev\\0SignalLatest\\Assets\\Engine\\Core\\EntityRepository.cs:\n    8  	public class EntityRepository : Singleton<EntityRepository> {\n    9  \n   10: 		public GameObject[] buildings;\n   11: 		public GameObject[] units;\n   12  		public Player player;\n   13  \n\nC:\\dev\\0SignalLatest\\Assets\\Light2D\\Samples\\Scripts\\Tank_VLS.cs:\n   16      public Transform bulletEmissionPoint;\n   17  \n   18:     private GameObject[] bulletPool;\n   19  \n   20      void Start()\n\n3 matches across 2 files\n\n\nSearching 328 files for \"Clicked the\"\n\nC:\\dev\\0SignalLatest\\Assets\\HUD\\Scripts\\HUDManager.cs:\n  170  		        if(action != null) {\n  171  		        	if (GUI.Button(pos, action))\n  172:             			Debug.Log(\"Clicked the button with text\");\n  173          \n  174  \n\n1 match in 1 file\n\n\nSearching 328 files for \"CreateUnit\"\n\nC:\\dev\\0SignalLatest\\Assets\\Entities\\Scripts\\Entities\\Factories\\DroneFactory.cs:\n   17      		base.PerformAction(targetObject, targetEntity, actionToPerform);\n   18      		// Whatever the action - create a new unit.\n   19:     		CreateUnit(actionToPerform);\n   20      	}\n   21  \n\nC:\\dev\\0SignalLatest\\Assets\\Entities\\Scripts\\Entities\\Factories\\UnitFactory.cs:\n   35  \n   36  		// Creates an unit.\n   37: protected void CreateUnit(string unitName) {\n   38  	_buildQueue.Enqueue(unitName);\n   39  }\n\n2 matches across 2 files\n\n\nSearching 328 files for \"AddUnit\"\n\nC:\\dev\\0SignalLatest\\Assets\\Engine\\Core\\Player.cs:\n   62  \n   63  		// Add a unit for the player.\n   64: 		public void AddUnit(string unitName, Vector3 spawnPoint, Quaternion rotation) {\n   65  			// Actually add the unit.\n   66  		    var units = GetComponentInChildren< PlayerUnits >();\n\nC:\\dev\\0SignalLatest\\Assets\\Entities\\Scripts\\Entities\\Factories\\UnitFactory.cs:\n   48  			if(_owner != null) {				\n   49              	// Creates a new unit.\n   50: 				_owner.AddUnit(_buildQueue.Dequeue(), _spawnPoint, transform.rotation);\n   51  				_currentBuildProgress = 0.0f;\n   52  			}\n\n2 matches across 2 files\n\n\nSearching 330 files for \"GetBuildImage\"\n\nC:\\dev\\0SignalLatest\\Assets\\Engine\\Core\\EntityRepository.cs:\n   38   \n   39  	 	// Get build image for a building.\n   40: 		public Texture2D GetBuildImage(string name) {\n   41  			// Look through the buldings.\n   42  		    foreach(var b in buildings) {\n\nC:\\dev\\0SignalLatest\\Assets\\HUD\\Scripts\\HUDManager.cs:\n  164  				var topPos = i * gui_buildImageHeight - (i+1) * gui_buildImagePadding;\n  165  				var buildPos = new Rect(gui_buildImagePadding,topPos,gui_ordersBarWidth,gui_buildImageHeight);\n  166: 				GUI.DrawTexture(buildPos,ResourceManager.GetBuildImage(buildQueue[i]));\n  167  				GUI.DrawTexture(buildPos,buildFrame);\n  168  				topPos += gui_buildImagePadding;\n  ...\n  195          		_tempVar2 = i / 2; // row\n  196          		var pos = GetButtonPos(_tempVar2, _tempVar1);\n  197: 		        var action = EntityRepository.Instance.GetBuildImage(actions[i]);	\n  198  		        if(action != null) {\n  199  		        	if (GUI.Button(pos, action)) {\n\n3 matches across 2 files\n\n\nSearching 332 files for \"SetSelection\"\n\nC:\\dev\\0SignalLatest\\Assets\\Engine\\Core\\UserInputService.cs:\n   41  			        if(_tempVector == Registry.Instance.invalidHitPoint) { // we dont care. \n   42  						if(GameService.Instance.selectedObject != null) {\n   43: 							GameService.Instance.selectedObject.SetSelection(SelectionType.NotSelected);\n   44  							GameService.Instance.selectedObject = null;\n   45  						}\n   ..\n   53  				        if(GameService.Instance.selectedObject != hitEntity) {\n   54  				        	if (GameService.Instance.selectedObject != null) { // Deselect if selected.\n   55: 								GameService.Instance.selectedObject.SetSelection(SelectionType.NotSelected);\n   56  			       			} \n   57: 							hitEntity.SetSelection(SelectionType.Command);\n   58  				            GameService.Instance.selectedObject = hitEntity;\n   59  			        	}\n   60  			        }\n   61  			        else if (GameService.Instance.selectedObject != null) { // Deselect if selected.\n   62: 						GameService.Instance.selectedObject.SetSelection(SelectionType.NotSelected);\n   63  						GameService.Instance.selectedObject = null;\n   64  			        }\n\nC:\\dev\\0SignalLatest\\Assets\\Entities\\Scripts\\Entities\\Entity.cs:\n   49  \n   50  		// Set this object as selected.\n   51: 		public void SetSelection(SelectionType selection) {\n   52  		   _currentSelection = selection;\n   53  		   if(_currentSelection != SelectionType.NotSelected)\n\n5 matches across 2 files\n",
-			"settings":
-			{
-				"buffer_size": 5660,
-				"line_ending": "Windows",
-				"name": "Find Results",
-				"scratch": true
-			}
-		},
-		{
-			"file": "Assets/Entities/Scripts/Entities/Entity.cs",
-			"settings":
-			{
-				"buffer_size": 2734,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "Assets/Engine/Core/Player.cs",
-			"settings":
-			{
-				"buffer_size": 2090,
-				"line_ending": "Windows"
 			}
 		},
 		{
@@ -320,48 +346,50 @@
 			}
 		},
 		{
-			"file": "Assets/Engine/Core/GameService.cs",
+			"file": "/C/Asseco/Unity/CC/CharacterController2D/Assets/TDTK_Free/Scripts/C#/AudioManager.cs",
 			"settings":
 			{
-				"buffer_size": 3465,
+				"buffer_size": 5471,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Assets/Engine/Audio/AudioService.cs",
+			"settings":
+			{
+				"buffer_size": 3336,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Assets/Editor/RegistryEditor.cs",
+			"settings":
+			{
+				"buffer_size": 5160,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "Assets/Engine/Core/Registry.cs",
+			"file": "Assets/Editor/DialogueEditor.cs",
 			"settings":
 			{
-				"buffer_size": 2737,
-				"line_ending": "Windows"
+				"buffer_size": 535,
+				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "Assets/Engine/Core/UserInputService.cs",
+			"file": "Assets/Editor/Linker.cs",
 			"settings":
 			{
-				"buffer_size": 4081,
-				"line_ending": "Windows"
+				"buffer_size": 262,
+				"line_ending": "Unix"
 			}
 		},
 		{
-			"contents": "using UnityEngine;\nusing System;\nusing System.Collections.Generic;\nusing ZS.Engine;\nusing ZS.Characters;\nusing ZS.Engine.Peripherials;\nusing System.Collections.ObjectModel;\nusing ZS.Entities.Factories;\n\nnamespace ZS.HUD {\n\n	// State of the cursor.\n	public enum CursorState { \n		Select, \n		Move,\n		Attack, \n		PanLeft, \n		PanRight, \n		PanUp, \n		PanDown, \n		Harvest \n	}\n\n	public class HUDManager : MonoBehaviour {\n\n		#region Textures.\n\n		// Button hover on element.\n		public Texture2D buttonHover, buttonClick;\n		public Texture2D buildFrame, buildMask;\n\n		public Texture2D[] resources;\n		public Texture2D activeCursor;\n		public Texture2D selectCursor, leftCursor, rightCursor, upCursor, downCursor;\n		public Texture2D[] moveCursors, attackCursors, harvestCursors;\n\n		#endregion\n\n		#region GUISkins.\n\n		private Dictionary< PlayerResourceType, int > _resourceValues, _resourceLimits;\n		private Dictionary< PlayerResourceType, Texture2D > _resourceImages;\n		\n		public GUISkin resourceSkin, ordersSkin, selectBoxSkin, mouseCursorSkin;\n		public bool _insideWidth, _insideHeight;\n\n		private GUIStyle _buttonsStyle;\n\n		public int gui_ordersBarWidth = 150;\n		public int gui_resourcesBarHeight = 40;\n		public int gui_selectionNameHeight = 30;\n\n		public int gui_buildImageWidth = 64, \n				   gui_buildImageHeight = 64,\n				   gui_buttonSpacing = 7,\n				   gui_scrollBarWidth = 22,\n				   gui_buildImagePadding = 8;\n\n		#endregion\n\n		#region Prefabs.\n\n		public GameObject selectionPrefab;\n\n		#endregion\n\n		private int _buildAreaHeight = 0;\n		private Entity _lastSelection;\n		private float _sliderValue;\n\n		private CursorState _activeCursorState;\n		private int _currentFrame = 0;\n		private bool _mouseOverHud;\n\n		private int _tempVar1, _tempVar2;\n\n		// Use this for initialization\n		void Start () {\n			if(_resourceValues == null)\n				_resourceValues = new Dictionary< PlayerResourceType, int >();\n			if(_resourceLimits == null)\n				_resourceLimits = new Dictionary< PlayerResourceType, int >();\n			_resourceImages = new Dictionary< PlayerResourceType, Texture2D > ();\n\n			_buildAreaHeight = Screen.height - gui_resourcesBarHeight - gui_selectionNameHeight - 2 * gui_buttonSpacing;\n\n			InitResources();\n			SetArcadeMode();\n		}\n		\n		// Update is called once per frame	\n		void OnGUI () {\n			DrawResources();\n			DrawOrders();\n			DrawMouseCursor();\n		}\n\n		// Draws the resources bar.\n		private void DrawResources() {\n			GUI.skin = resourceSkin;\n   			GUI.BeginGroup(new Rect(0,0,Screen.width , gui_resourcesBarHeight));\n  	 		GUI.Box(new Rect(0,0,Screen.width,gui_resourcesBarHeight),\"\");\n  	 		int topPos = 4, iconLeft = 4, textLeft = 40;\n			DrawResourceIcon(PlayerResourceType.Food, iconLeft, textLeft, topPos);\n			iconLeft += Registry.TEXT_WIDTH;\n			textLeft += Registry.TEXT_WIDTH;\n			DrawResourceIcon(PlayerResourceType.Organic, iconLeft, textLeft, topPos);\n			iconLeft += Registry.TEXT_WIDTH;\n			textLeft += Registry.TEXT_WIDTH;\n			DrawResourceIcon(PlayerResourceType.Synthetic, iconLeft, textLeft, topPos);\n   			GUI.EndGroup();\n		}\n\n		private void DrawResourceIcon(PlayerResourceType type, int iconLeft, int textLeft, int topPos) {\n			if(!_resourceImages.ContainsKey(type))\n				return;\n 		   	var icon = _resourceImages[type];\n    		var text = String.Format(\"{0}/{1}\", _resourceValues[type].ToString(),\n    			_resourceLimits[type].ToString());\n    		GUI.DrawTexture(new Rect(iconLeft, topPos, Registry.ICON_WIDTH, Registry.ICON_HEIGHT), icon);\n    		GUI.Label (new Rect(textLeft, topPos, Registry.TEXT_WIDTH, Registry.TEXT_HEIGHT), text);\n		}\n\n		// Draws the orders bar.\n		private void DrawOrders() {\n			GUI.skin = ordersSkin;\n	  		// GUI.BeginGroup(new Rect(Screen.width - gui_ordersBarWidth , \n	  		// 	gui_resourcesBarHeight, gui_ordersBarWidth,\n	  		// 	Screen.height - gui_resourcesBarHeight));\n	  		GUI.BeginGroup(new Rect(Screen.width-gui_ordersBarWidth- gui_buildImageWidth,\n	  			gui_resourcesBarHeight,\n	  			gui_ordersBarWidth+gui_buildImageWidth,\n	  			Screen.height- gui_resourcesBarHeight));\n\n			GUI.Box(new Rect(gui_buildImageWidth+gui_scrollBarWidth,0,\n				gui_ordersBarWidth,Screen.height- gui_resourcesBarHeight), \"\");\n\n	  		//GUI.Box(new Rect(0,0, gui_ordersBarWidth , Screen.height - gui_resourcesBarHeight),\"\");\n\n			// Draw selected player.\n			var selectionName = \"\";\n			if(GameService.Instance.selectedObject != null) {\n    			selectionName = GameService.Instance.selectedObject.displayName;\n			}\n			// if(!selectionName.Equals(\"\")) {\n   //  			int topPos = _buildAreaHeight + gui_buttonSpacing;\n   // 				GUI.Label(new Rect(0,topPos,gui_ordersBarWidth,gui_selectionNameHeight), selectionName);\n			// }   		\n			if(!selectionName.Equals(\"\")) {\n			    int leftPos = gui_buildImageWidth + gui_scrollBarWidth / 2;\n			    int topPos = _buildAreaHeight + gui_buttonSpacing;\n			    GUI.Label(new Rect(leftPos,topPos,gui_ordersBarWidth,gui_selectionNameHeight), selectionName);\n			}\n\n			// If selected object is owned by current player..\n			if(GameService.Instance.IsSelectedObjectOwnerByPlayer()) {\n    			//reset slider value if the selected object has changed\n    			if(_lastSelection && _lastSelection != GameService.Instance.selectedObject) \n    				_sliderValue = 0.0f;\n    			DrawActions(GameService.Instance.selectedObject.GetActions());\n    			//store the current selection\n    			_lastSelection = GameService.Instance.selectedObject;\n\n    			var selectedFactory = _lastSelection.GetComponent< UnitFactory >();\n				if(selectedFactory != null) {\n    				DrawBuildQueue(selectedFactory.GetBuildQueueValues(), \n    					selectedFactory.GetUnitBuildPercentage());\n				}\n			}	\n\n	   		GUI.EndGroup();\n		}\n\n		// Draw building queue.\n		private void DrawBuildQueue(string[] buildQueue, float buildPercentage) {\n			for(int i = 0; i < buildQueue.Length; i++) {\n				float topPos = i * gui_buildImageHeight - (i+1) * gui_buildImagePadding;\n				var buildPos = new Rect(gui_buildImagePadding,topPos,gui_ordersBarWidth,\n					gui_buildImageHeight);\n				GUI.DrawTexture(buildPos,EntityRepository.Instance.GetBuildImage(buildQueue[i]));\n				GUI.DrawTexture(buildPos,buildFrame);\n				topPos += gui_buildImagePadding;\n				float width = gui_ordersBarWidth - 2 * gui_buildImagePadding;\n				float height = gui_buildImageHeight - 2 * gui_buildImagePadding;\n				if(i==0) {\n					topPos += height * buildPercentage;\n					height *= (1 - buildPercentage);\n				}\n				GUI.DrawTexture(new Rect(2 * gui_buildImagePadding,topPos,width,height),buildMask);\n			}\n		}\n\n		// Draw actions for object.\n		private void DrawActions(string[] actions) {\n   			GUI.skin.button = _buttonsStyle;\n\n    		//define the area to draw the actions inside\n   			var numActions = actions.Length;\n    		//GUI.BeginGroup(new Rect(0,0, gui_ordersBarWidth, _buildAreaHeight));\n			GUI.BeginGroup(new Rect(gui_buildImageWidth,0,gui_ordersBarWidth, _buildAreaHeight));\n\n    		//draw scroll bar for the list of actions if need be\n    		if(numActions > MaxNumRows(_buildAreaHeight)) \n    			DrawSlider(_buildAreaHeight, numActions / 2.0f);\n\n    		//display possible actions as buttons and handle the button click for each\n    		for(var i = 0; i < numActions; i++) {\n        		_tempVar1 = i % 2; // column\n        		_tempVar2 = i / 2; // row\n        		var pos = GetButtonPos(_tempVar2, _tempVar1);\n		        var action = EntityRepository.Instance.GetBuildImage(actions[i]);	\n		        if(action != null) {\n		        	if (GUI.Button(pos, action)) {\n                		if(GameService.Instance.selectedObject != null) {\n                			GameService.Instance.selectedObject.PerformAction(null, null, actions[i]);\n                		}\n            		}\n        		}\n    		}\n    		GUI.EndGroup();\n		}\n\n		// Count max number of rows.\n		private int MaxNumRows(int areaHeight) {\n		    return areaHeight / gui_buildImageHeight;\n		}\n \n 		// Get position of a button in row.\n 		// TODO : refactor.\n		private Rect GetButtonPos(int row, int column) {\n			return new Rect(gui_scrollBarWidth + column * gui_buildImageWidth,\n				row * gui_buildImageHeight - _sliderValue * gui_buildImageHeight,\n				gui_buildImageWidth,\n				gui_buildImageHeight);\n		    // return new Rect(column * gui_buildImageWidth, \n		    // 	row * gui_buildImageHeight - _sliderValue * gui_buildImageHeight,\n		    // 	gui_buildImageWidth,\n		    // 	gui_buildImageHeight);\n		}\n\n		// Draw a slider. \n		private void DrawSlider(int groupHeight, float numRows) {\n		    //slider goes from 0 to the number of rows that do not fit on screen\n		    _sliderValue = GUI.VerticalSlider(GetScrollPos(groupHeight),_sliderValue,0.0f,\n		    	numRows - MaxNumRows(groupHeight));\n		}\n\n		// Get scroll position.\n		private Rect GetScrollPos(int groupHeight) {\n    		return new Rect(gui_buttonSpacing, gui_buttonSpacing, gui_scrollBarWidth,\n    			groupHeight - 2 * gui_buttonSpacing);\n		}\n\n		// Initialize resources like icons.\n		private void InitResources() {\n			for(int i = 0; i < resources.Length; i++) {\n    			switch(resources[i].name) {\n        			case Registry.FOOD_ICON_NAME:\n            			_resourceImages.Add(PlayerResourceType.Food, resources[i]);\n            			break;\n        			case Registry.ORGANIC_ICON_NAME:\n            			_resourceImages.Add(PlayerResourceType.Organic, resources[i]);\n            			break;\n            		case Registry.SYNTHETIC_ICON_NAME:\n            			_resourceImages.Add(PlayerResourceType.Synthetic, resources[i]);\n            			break;\n        			default: \n        				break;\n    			}\n			}\n\n			// Setup SKins and styles.\n			_buttonsStyle = new GUIStyle();\n			_buttonsStyle.hover.background = buttonHover;\n    		_buttonsStyle.active.background = buttonClick;\n		}\n\n		public bool PointInClientBounds(Vector3 point) {\n			 //Screen coordinates start in the lower-left corner of the screen\n   			 //not the top-right of the screen like the drawing coordinates do\n   			 _insideWidth = point.x >= 0 && point.x <= Screen.width - gui_ordersBarWidth;      \n   			 _insideHeight = point.y >= 0 && point.y <= Screen.height - 	gui_resourcesBarHeight;\n  			 return _insideWidth && _insideHeight;\n		}\n\n		// Draws resources.\n		public void SetResourceCollections(Dictionary< PlayerResourceType, int > resourceValues, \n			Dictionary< PlayerResourceType, int > resourceLimits) {\n    		_resourceValues = resourceValues;\n    		_resourceLimits = resourceLimits;\n		}\n\n		// Gets the actual PLAYING area.\n		public Rect GetPlayingArea() {\n    		return new Rect(0, gui_resourcesBarHeight, Screen.width - gui_ordersBarWidth, \n    			Screen.height - gui_resourcesBarHeight);\n		}\n\n		// Draw a mouse cursor.\n		private void DrawMouseCursor() {\n			_mouseOverHud = !PointInClientBounds(InputService.Instance.MousePosition) && \n				_activeCursorState != CursorState.PanRight && _activeCursorState != CursorState.PanUp;\n\n  			if(_mouseOverHud) {\n	        	Screen.showCursor = true;\n	    	} else {\n        		Screen.showCursor = false; // dont use the regular cursor, just draw our skin.\n        		GUI.skin = mouseCursorSkin;\n        		GUI.BeginGroup(new Rect(0,0,Screen.width,Screen.height));\n        		UpdateCursorAnimation();\n        		Rect cursorPosition = GetCursorDrawPosition();\n        		// Draw label with texture.\n        		GUI.Label(cursorPosition, activeCursor);\n        		GUI.EndGroup();\n    		}\n		}\n\n		//sequence animation for cursor (based on more than one image for the cursor)\n    	//change once per second, loops through array of images\n    	// Time.time =  This is the time in seconds since the start of the game. \n		private void UpdateCursorAnimation() {\n    		if(_activeCursorState == CursorState.Move) {\n        		_currentFrame = (int)Time.time % moveCursors.Length;\n        		activeCursor = moveCursors[_currentFrame];\n    		} else if(_activeCursorState == CursorState.Attack) {\n        		_currentFrame = (int)Time.time % attackCursors.Length;\n        		activeCursor = attackCursors[_currentFrame];\n    		} else if(_activeCursorState == CursorState.Harvest) {\n        		_currentFrame = (int)Time.time % harvestCursors.Length;\n        		activeCursor = harvestCursors[_currentFrame];\n    		}\n		}\n\n		// Get position where to draw a cursror.\n		private Rect GetCursorDrawPosition() {\n    		//set base position for custom cursor image\n    		//screen draw coordinates are inverted\n  			float leftPos = InputService.Instance.MousePosition.x;\n    		float topPos = Screen.height - InputService.Instance.MousePosition.y; \n\n    		//adjust position base on the type of cursor being shown\n    		if(_activeCursorState == CursorState.PanRight)\n    			 leftPos = Screen.width - activeCursor.width;\n   			else if(_activeCursorState == CursorState.PanDown) \n   				topPos = Screen.height - activeCursor.height;\n    		else if(_activeCursorState == CursorState.Move || \n    			_activeCursorState == CursorState.Select || \n    			_activeCursorState == CursorState.Harvest) {\n        			topPos -= activeCursor.height / 2;\n        			leftPos -= activeCursor.width / 2;\n   				}\n    		return new Rect(leftPos, topPos, activeCursor.width, activeCursor.height);\n		}\n\n		public void SetArcadeMode() {\n			SetCursorState(CursorState.Attack);\n		} \n\n		public void SetTacticalMode() {\n			SetCursorState(CursorState.Select);\n		}\n\n		public void SetCursorState(CursorState newState) {\n    		_activeCursorState = newState;\n    		switch(newState) {\n			    case CursorState.Select:\n        			activeCursor = selectCursor;\n        			break;\n    			case CursorState.Attack:\n        			_currentFrame = (int)Time.time % attackCursors.Length;\n        			activeCursor = attackCursors[_currentFrame];\n        			break;\n    			case CursorState.Harvest:\n        			_currentFrame = (int)Time.time % harvestCursors.Length;\n        			activeCursor = harvestCursors[_currentFrame];\n        			break;\n    			case CursorState.Move:\n        			_currentFrame = (int)Time.time % moveCursors.Length;\n        			activeCursor = moveCursors[_currentFrame];\n        			break;\n    			case CursorState.PanLeft:\n        			activeCursor = leftCursor;\n    				break;\n    			case CursorState.PanRight:\n        			activeCursor = rightCursor;\n        			break;\n    			case CursorState.PanUp:\n        			activeCursor = upCursor;\n        			break;\n    			case CursorState.PanDown:\n        			activeCursor = downCursor;\n        			break;\n    			default: break;\n    		}\n		}\n	}\n\n}",
-			"file": "Assets/HUD/Scripts/HUDManager.cs",
-			"file_size": 14590,
-			"file_write_time": 130407696077627399,
+			"file": "/C/Asseco/Unity/CC/CharacterController2D/Assets/TDTK_Free/Scripts/C#/Editor/SpawnEditor.cs",
 			"settings":
 			{
-				"buffer_size": 14200,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"contents": "using UnityEngine;\nusing System.Collections;\n\npublic class RallyPoint : MonoBehaviour {\n\n	public void Enable () {\n		var renderers = GetComponentsInChildren();\n		foreach(Renderer renderer in renderers) \n			renderer.enabled = true;\n	}\n\n	public void Disable () {\n		var renderers = GetComponentsInChildren();\n		foreach(Renderer renderer in renderers) \n				renderer.enabled = false;\n	}\n}\n",
-			"file": "Assets/Engine/Core/RallyPoint.cs",
-			"file_size": 385,
-			"file_write_time": 130408539329397146,
-			"settings":
-			{
-				"buffer_size": 383,
+				"buffer_size": 14144,
 				"line_ending": "Unix"
 			}
 		},
@@ -461,25 +489,60 @@
 	},
 	"file_history":
 	[
-		"/C/Users/Jarosław/AppData/Roaming/Sublime Text 3/Packages/User/distraction_free_window.sublime-settings",
+		"/C/dev/Theme/overrides_custom.css",
+		"/C/Asseco/Feature #1411  [MAR] Zarządzanie Użytkownikami Końcowymi - Lista użytkowników końcowych - Prace Graficzne - Asseco - Portal e-Uslugi.htm",
+		"/C/dev/0SignalLatest/Assets/Entities/Resources/Scripts/ResMetal.cs",
+		"/C/dev/0SignalLatest/Assets/Entities/Resources.meta",
+		"/C/dev/0SignalLatest/Assets/Entities/Resources/Scripts/ResMetalDeposit.cs",
+		"/C/dev/0SignalLatest/Assets/Engine/Core/PlayerResourceType.cs",
 		"/C/dev/0SignalLatest/Assets/Entities/Scripts/Entities/BuildableEntity.cs",
-		"/C/dev/0SignalLatest/Assets/HUD/Scripts/HUDManager.cs.meta",
-		"/C/dev/0SignalLatest/Assets/Engine/Core/PlayerUnits.cs",
-		"/C/dev/0SignalLatest/Assets/Engine/Core/EntityRepository.cs",
+		"/C/dev/0SignalLatest/Assets/Engine/Core/PlayerSettingsBase.cs",
+		"/C/dev/0SignalLatest/Assets/Entities/Scripts/Entities/Entity.cs",
+		"/C/dev/0SignalLatest/Assets/Entities/Scripts/Entities/MovingUnit.cs",
+		"/C/dev/0SignalLatest/Assets/Engine/Cam/CameraController.cs",
+		"/C/dev/0SignalLatest/Assets/Engine/Utilities/LookHelper.cs",
+		"/C/dev/0SignalLatest/Assets/Engine/Core/Player.cs",
 		"/C/dev/0SignalLatest/Assets/Entities/Scripts/Entities/Factories/UnitFactory.cs",
+		"/C/dev/0SignalLatest/Assets/Entities/Scripts/Entities/Drone.cs",
+		"/C/dev/0SignalLatest/Assets/Engine/Core/Registry.cs",
+		"/C/dev/0SignalLatest/Assets/Engine/Core/UserInputService.cs",
+		"/C/dev/0SignalLatest/Assets/Engine/Core/RallyPoint.cs",
+		"/C/dev/0SignalLatest/Assets/Engine/Core/PlayerUnits.cs",
+		"/C/dev/0SignalLatest/Assets/HUD/Scripts/HUDManager.cs",
+		"/C/dev/0SignalLatest/Assets/Engine/Core/SelectionType.cs",
+		"/C/Asseco/Unity/CC/CharacterController2D/Assets/TDTK_Free/Scripts/C#/Unit.cs",
+		"/C/dev/0SignalLatest/Assets/Editor/DialogueEditor.cs",
+		"/C/Asseco/Unity/CC/CharacterController2D/Assets/TDTK_Free/Scripts/C#/Editor/Link.cs",
+		"/C/dev/0SignalLatest/Assets/Editor/Linker.cs",
+		"/C/dev/0SignalLatest/Assets/Editor/DialogueSystem.cs",
+		"/C/dev/0SignalLatest/Assets/Editor/DialogueManager.cs",
+		"/C/Asseco/Unity/CC/CharacterController2D/Assets/TDTK_Free/Scripts/C#/Editor/LayerEditor.cs",
+		"/C/Asseco/Unity/CC/CharacterController2D/Assets/TDTK_Free/Scripts/C#/Editor/TowerEditor.cs",
+		"/C/Asseco/Unity/CC/CharacterController2D/Assets/TDTK_Free/Scripts/C#/UnitCreep.cs",
+		"/C/Asseco/Unity/CC/CharacterController2D/Assets/TDTK_Free/Scripts/C#/UI.cs",
+		"/C/Asseco/Unity/CC/CharacterController2D/Assets/TDTK_Free/Scripts/C#/ObjectPoolManager.cs",
+		"/C/Asseco/Unity/CC/CharacterController2D/Assets/TDTK_Free/Scripts/C#/GameMessage.cs",
+		"/C/Asseco/Unity/CC/CharacterController2D/Assets/TDTK_Free/Scripts/C#/DebugShowSelf.cs",
+		"/C/dev/0SignalLatest/Assets/Light2D/Core/Light2D.cs",
+		"/C/Asseco/Unity/CC/CharacterController2D/Assets/TDTK_Free/Scripts/C#/BuildManager.cs",
+		"/C/dev/0SignalLatest/Assets/Engine/Audio/AudioExtensions.cs",
+		"/C/dev/0SignalLatest/Assets/Engine/Peripherials/InputService.cs",
+		"/C/dev/0SignalLatest/Assets/Editor/RegistryEditor.cs",
+		"/C/dev/0SignalLatest/Assets/Engine/Audio/AudioObject.cs",
+		"/C/dev/0SignalLatest/Assets/Engine/Core/GameService.cs",
+		"/C/Asseco/Unity/CC/CharacterController2D/Assets/TDTK_Free/Scripts/C#/Platform.cs",
+		"/C/Users/Jarosław/AppData/Roaming/Sublime Text 3/Packages/User/distraction_free_window.sublime-settings",
+		"/C/dev/0SignalLatest/Assets/HUD/Scripts/HUDManager.cs.meta",
+		"/C/dev/0SignalLatest/Assets/Engine/Core/EntityRepository.cs",
 		"/C/dev/0SignalLatest/Assets/Engine/Utilities/DebugUtil.cs",
 		"/C/dev/0SignalLatest/Assets/Entities/Scripts/Entities/Factories/UnitFactory.cs.meta",
 		"/C/dev/0SignalLatest/Assets/Prefabs/Entities/Units.meta",
-		"/C/dev/0SignalLatest/Assets/Engine/Core/Player.cs",
 		"/C/dev/0SignalLatest/Assets/Prefabs/Plants.meta",
 		"/C/Asseco/!/Liferay-SIK.htm",
 		"/C/dev/0SignalLatest/Assets/Entities/Icons/drone.png.meta",
 		"/C/dev/0SignalLatest/Assets/Dialogue.meta",
-		"/C/dev/0SignalLatest/Assets/Entities/Scripts/Entities/Drone.cs",
 		"/C/Users/Jarosław/Documents/MVVMTEst/Assets/Scripts/DataContext.cs",
 		"/C/Asseco/Formatki/www/Custom/overrides_custom.css",
-		"/C/dev/0SignalLatest/Assets/Engine/Peripherials/InputService.cs",
-		"/C/dev/0SignalLatest/Assets/HUD/Scripts/HUDManager.cs",
 		"/C/Users/Jarosław/Documents/SampleMove/Assets/PlayaController.cs",
 		"/C/Users/Jarosław/Documents/SampleMove/Assets/PlayaController.js",
 		"/C/Users/Jarosław/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
@@ -487,9 +550,6 @@
 		"/C/Users/Jarosław/AppData/Roaming/Sublime Text 3/Packages/Default/Default (Windows).sublime-keymap",
 		"/C/Users/Jarosław/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
 		"/C/Asseco/Statystyka medyczna - Portal Informacyjny.htm",
-		"/C/dev/0SignalLatest/Assets/Entities/Scripts/Entities/Entity.cs",
-		"/C/dev/0SignalLatest/Assets/Engine/Core/GameService.cs",
-		"/C/dev/0SignalLatest/Assets/Engine/Core/Registry.cs",
 		"/C/dev/0SignalLatest/Assets/readme.js",
 		"/C/dev/0SignalLatest/Assets/Entities/Scripts/Entities/DroneFactory.cs",
 		"/C/dev/0SignalLatest/Assets/Engine/Core/EntityService.cs",
@@ -556,39 +616,7 @@
 		"/C/Development/Games/ZeroSignal/Assets/Engine/Registry.cs",
 		"/C/Development/Games/ZeroSignal/Assets/Engine/Factories/SelectorFactory.cs",
 		"/C/Development/Games/ZeroSignal/Assets/Engine/Singleton.cs",
-		"/C/Development/Games/ZeroSignal/Assets/Characters/Scripts/PlayerController.cs",
-		"/C/Users/Jarosław/Documents/New Unity Project 9/Assets/TestSc.js",
-		"/C/Users/Jarosław/Documents/New Unity Project 10/Assets/Test.cs",
-		"/C/Users/Jarosław/Documents/New Unity Project 9/Assets/Standard Assets/Image Effects (Pro Only)/CameraMotionBlur.js",
-		"/C/Development/Games/ZeroSignal/Assets/Engine/GameService.cs",
-		"/C/Development/Games/ZeroSignal/Assets/Engine/Utilities/DebugUtil.cs",
-		"/C/Development/Games/ZeroSignal/Assets/Characters/Scripts/PlayerControllerExt.cs",
-		"/C/Development/Games/ZeroSignal/Assets/HUD/Scripts/LayoutSettings.cs",
-		"/C/Development/Games/ZeroSignal/Assets/Engine/Peripherials/InputService.cs",
-		"/C/Development/Games/ZeroSignal/Assets/Characters/Scripts/EnemyController.cs",
-		"/C/Development/Games/ZeroSignal/Assets/Characters/Scripts/Entities/EntityParams.cs",
-		"/C/Users/Jarosław/Documents/New Unity Project 8/Assets/Scripts/PlayerControl.cs",
-		"/C/Users/Jarosław/Documents/New Unity Project 8/Assets/Scripts/PickupSpawner.cs",
-		"/C/Development/Games/ZeroSignal/Assets/Engine/Cam/CameraController.cs",
-		"/C/Development/Games/ZeroSignal/Assets/Engine/Scripts/LookHelper.cs",
-		"/C/Development/Games/ZeroSignal/Assets/Engine/Input/InputService.cs",
-		"/C/Development/Games/ZeroSignal/Assets/Engine/Math/Maths.cs",
-		"/C/Development/Games/ZeroSignal/Assets/Engine/Logging/LoggerFactory.cs",
-		"/C/Development/Games/ZeroSignal/Assets/Engine/Logging/ILogger.cs",
-		"/C/Development/Games/ZeroSignal/Assets/Engine/Logging/ConsoleLogger.cs",
-		"/C/Development/Games/ZeroSignal/Assets/Engine/IInitializable.cs",
-		"/C/Development/Games/ZeroSignal/Assets/Engine/Math/Math.cs",
-		"/C/Development/Games/ZeroSignal/Assets/Engine/Scripts/CameraBehaviorFollow.cs",
-		"/C/Development/Games/ZeroSignal/Assets/Engine/Cam/CameraBehaviorFollow.cs",
-		"/C/Development/Games/ZeroSignal/Assets/Engine/Scripts/Singleton.cs",
-		"/C/Projects/ZS/zerosignal/Assets/Scripts/Engine/Singleton.cs",
-		"/C/Development/Games/ZeroSignal/Assets/Engine/Reg.cs",
-		"/C/Projects/ZS/zerosignal/Assets/Scripts/Entities/scr_LiveEntity.cs",
-		"/C/Development/Games/ZeroSignal/Assets/Engine/Scripts/Camera/CamFollowBehavior.cs",
-		"/C/Projects/ZS/zerosignal/Assets/Scripts/Engine/Interfaces/IInitializable.cs",
-		"/C/Projects/ZS/zerosignal/Assets/Scripts/Engine/Logging/LoggerFactory.cs",
-		"/C/Projects/ZS/zerosignal/Assets/Scripts/Entities/PlayerEntity.cs",
-		"/C/Development/Games/ZeroSignal/Assets/Engine/Scripts/Camera/CameraManager.cs"
+		"/C/Development/Games/ZeroSignal/Assets/Characters/Scripts/PlayerController.cs"
 	],
 	"find":
 	{
@@ -607,6 +635,19 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"Resourcetype",
+			"Debug.Log",
+			"Debug.",
+			"ActionInitiated",
+			"previousCursorState",
+			"rallyPointCursor",
+			"rallyPointImage",
+			"invalidHitPoint",
+			"OnDrawGizmosSelected",
+			"DebugShowSelf",
+			"Bullet",
+			"_musicSource",
+			"Init",
 			"SetSelection",
 			"GetBuildImage",
 			"AddUnit",
@@ -721,20 +762,7 @@
 			"using UnityEngine;\nusing System.Collections;\n\nnamespace Engine.Camera { \n\n// Mode of the camera.\npublic enum CameraMode {\n	Detached = 0,\n	Fixed,\n	Follow\n}\n\n// Manages camera bahaviour.\npublic class CameraManager  {\n\n	#region Declarations.\n\n	private CameraMode _currentMode;\n\n	#endregion\n\n	// Follow a transform.\n	public void Follow(Transform player) {\n		_currentMode = CameraMode.Follow;\n	}\n\n	// Fix on location.\n\n	public void Fix(Vector3 position) {\n		_currentMode = CameraMode.Fixed;\n\n	}\n\n	// Camera will be detached.\n	public void void Detach() {\n		_currentMode = CameraMode.Detached;\n	}\n\n	public Vector3 GetPosition(Vector3 lastPos) {\n		\n	} \n\n}\n\n}",
 			"}",
 			"using UnityEngine;\nusing System.Collections;\n\nnamespace Engine.Camera { \n\n// Mode of the camera.\npublic enum CameraMode {\n	Detached = 0,\n	Fixed,\n	Follow\n}\n\n// Manages camera bahaviour.\npublic class CameraManager  {\n\n	#region Declarations.\n\n	private CameraMode _currentMode;\n\n	#endregion\n\n	// Follow a transform.\n	public void Follow(Transform player) {\n		_currentMode = CameraMode.Follow;\n	}\n\n	// Fix on location.\n\n	public void Fix(Vector3 position) {\n		_currentMode = CameraMode.Fixed;\n\n	}\n\n	// Camera will be detached.\n	public void void Detach() {\n		_currentMode = CameraMode.Detached;\n	}\n\n	public Vector3 GetPosition(Vector3 lastPos) {\n		\n	} \n\n}\n\n}",
-			"var quaternion = CalcQuaternion(source);",
-			"5f",
-			"z",
-			"	using UnityEngine;\nusing System.Collections;\n\npublic static class LookHelper {\n\n	#region Members.\n\n	private static Vector3 _mousePos;\n 	private static Vector3 _objectPos;\n	private static float _angle;\n	private static Quaternion _rotation;\n\n	#endregion\n\n	public static Quaternion CalculateLook(Transform source, Vector3 target, float speed) {\n		_mousePos = Input.mousePosition;\n  	   _mousePos.z = 10.05f; //The distance between the camera and object\n 	   object_pos = Camera.main.WorldToScreenPoint(transform.position);\n 	   _mousePos.x = _mousePos.x - object_pos.x;\n	    _mousePos.y = _mousePos.y - object_pos.y;\n	    angle = Mathf.Atan2(_mousePos.y, _mousePos.x) * Mathf.Rad2Deg - 90;\n\n	    return Quaternion.Euler(new Vector3(0, 0, angle));\n	}\n\n	\n}",
-			"internal",
-			"inputRotation",
-			"inputrotation",
-			"ProcessState",
-			"example-im",
-			"movieFrame",
-			"camera",
-			"Portfolio",
-			"portfolio",
-			"Parallax"
+			"var quaternion = CalcQuaternion(source);"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -753,7 +781,7 @@
 	"groups":
 	[
 		{
-			"selected": 11,
+			"selected": 8,
 			"sheets":
 			[
 				{
@@ -782,7 +810,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 12,
+					"stack_index": 20,
 					"type": "text"
 				},
 				{
@@ -791,15 +819,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2822,
+						"buffer_size": 2885,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								702,
-								710
+								2052,
+								2052
 							]
 						],
 						"settings":
@@ -808,15 +836,43 @@
 							"syntax": "Packages/C#/C#.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
-						"translation.x": 0.0,
-						"translation.y": 275.0,
+						"translation.x": -0.0,
+						"translation.y": 1020.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 13,
+					"stack_index": 15,
 					"type": "text"
 				},
 				{
 					"buffer": 2,
+					"file": "Assets/Engine/Core/DebugShowSelf.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 379,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								61,
+								61
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C#/C#.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 14,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
 					"file": "Assets/HUD.meta",
 					"semi_transient": false,
 					"settings":
@@ -841,29 +897,113 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 19,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
-					"file": "Assets/Entities/Scripts/Entities/Factories/UnitFactory.cs",
+					"buffer": 4,
+					"file": "Assets/HUD/Scripts/HUDManager.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2739,
+						"buffer_size": 15883,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								221,
-								221
+								6542,
+								6542
 							]
 						],
 						"settings":
 						{
-							"dfw_side_bar_vis": true,
+							"syntax": "Packages/C#/C#.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 3721.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "Assets/Entities/Scripts/Entities/Factories/UnitFactory.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4772,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2700,
+								2700
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C#/C#.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1083.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "Assets/Entities/Scripts/Entities/Resource.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 643,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								575,
+								575
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C#/C#.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 100.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "Assets/Entities/Resources/Scripts/Resource.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 663,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								84,
+								106
+							]
+						],
+						"settings":
+						{
 							"syntax": "Packages/C#/C#.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
@@ -871,41 +1011,98 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "Assets/Entities/Scripts/Entities/BuildableEntity.cs",
+					"buffer": 8,
+					"file": "Assets/Entities/Resources/Scripts/ResMetalDeposit.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 821,
+						"buffer_size": 1028,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								118,
-								118
+								747,
+								747
 							]
 						],
 						"settings":
 						{
-							"dfw_side_bar_vis": true,
 							"syntax": "Packages/C#/C#.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
-						"translation.x": -0.0,
-						"translation.y": 11.0,
+						"translation.x": 0.0,
+						"translation.y": 251.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
+					"buffer": 9,
+					"file": "Assets/Engine/Core/PlayerSettingsBase.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 769,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								453,
+								453
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C#/C#.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 173.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "Assets/Engine/Core/Player.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2583,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								674,
+								676
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C#/C#.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 960.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
 					"file": "Assets/Entities/Scripts/Entities/Factories/DroneFactory.cs",
 					"semi_transient": false,
 					"settings":
@@ -930,61 +1127,29 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 14,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "Assets/Entities/Scripts/Entities/Drone.cs",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 256,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								101,
-								101
-							]
-						],
-						"settings":
-						{
-							"dfw_side_bar_vis": true,
-							"syntax": "Packages/C#/C#.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
 					"stack_index": 9,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
-					"file": "Assets/Entities/Scripts/Entities/MovingUnit.cs",
+					"buffer": 12,
+					"file": "Assets/Engine/Core/DebugUtils.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2713,
+						"buffer_size": 463,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								249,
-								249
+								344,
+								344
 							]
 						],
 						"settings":
 						{
-							"dfw_side_bar_vis": true,
-							"syntax": "Packages/C#/C#.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/C#/C#.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -994,190 +1159,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 8,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5660,
-						"regions":
-						{
-							"match":
-							{
-								"flags": 112,
-								"regions":
-								[
-									[
-										235,
-										246
-									],
-									[
-										483,
-										494
-									],
-									[
-										859,
-										869
-									],
-									[
-										1050,
-										1060
-									],
-									[
-										1351,
-										1363
-									],
-									[
-										1391,
-										1403
-									],
-									[
-										1592,
-										1604
-									],
-									[
-										1889,
-										1900
-									],
-									[
-										2233,
-										2243
-									],
-									[
-										2424,
-										2434
-									],
-									[
-										2684,
-										2691
-									],
-									[
-										3031,
-										3038
-									],
-									[
-										3359,
-										3372
-									],
-									[
-										3767,
-										3780
-									],
-									[
-										4059,
-										4072
-									],
-									[
-										4507,
-										4519
-									],
-									[
-										4848,
-										4860
-									],
-									[
-										4936,
-										4948
-									],
-									[
-										5234,
-										5246
-									],
-									[
-										5488,
-										5500
-									]
-								],
-								"scope": ""
-							}
-						},
-						"selection":
-						[
-							[
-								4202,
-								4202
-							]
-						],
-						"settings":
-						{
-							"detect_indentation": false,
-							"dfw_side_bar_vis": true,
-							"line_numbers": false,
-							"output_tag": 8,
-							"result_base_dir": "",
-							"result_file_regex": "^([A-Za-z\\\\/<].*):$",
-							"result_line_regex": "^ +([0-9]+):",
-							"scroll_past_end": true,
-							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 3001.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "Assets/Entities/Scripts/Entities/Entity.cs",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2734,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								454,
-								454
-							]
-						],
-						"settings":
-						{
-							"dfw_side_bar_vis": true,
-							"syntax": "Packages/C#/C#.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 141.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 10,
-					"file": "Assets/Engine/Core/Player.cs",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2090,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								213,
-								213
-							]
-						],
-						"settings":
-						{
-							"dfw_side_bar_vis": true,
-							"syntax": "Packages/C#/C#.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 23.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 11,
+					"buffer": 13,
 					"semi_transient": false,
 					"settings":
 					{
@@ -1203,159 +1185,182 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 12,
-					"file": "Assets/Engine/Core/GameService.cs",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3465,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								408,
-								408
-							]
-						],
-						"settings":
-						{
-							"dfw_side_bar_vis": true,
-							"syntax": "Packages/C#/C#.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 360.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 15,
-					"type": "text"
-				},
-				{
-					"buffer": 13,
-					"file": "Assets/Engine/Core/Registry.cs",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2737,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"dfw_side_bar_vis": true,
-							"syntax": "Packages/C#/C#.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 600.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 21,
+					"stack_index": 18,
 					"type": "text"
 				},
 				{
 					"buffer": 14,
-					"file": "Assets/Engine/Core/UserInputService.cs",
+					"file": "/C/Asseco/Unity/CC/CharacterController2D/Assets/TDTK_Free/Scripts/C#/AudioManager.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4081,
+						"buffer_size": 5471,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2369,
-								2369
+								975,
+								1048
 							]
 						],
 						"settings":
 						{
-							"dfw_side_bar_vis": true,
 							"syntax": "Packages/C#/C#.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 840.0,
+						"translation.y": 420.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 11,
+					"stack_index": 16,
 					"type": "text"
 				},
 				{
 					"buffer": 15,
-					"file": "Assets/HUD/Scripts/HUDManager.cs",
+					"file": "Assets/Engine/Audio/AudioService.cs",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 14200,
+						"buffer_size": 3336,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5920,
-								5920
+								691,
+								706
 							]
 						],
 						"settings":
 						{
-							"dfw_side_bar_vis": true,
 							"syntax": "Packages/C#/C#.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 3261.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 16,
-					"file": "Assets/Engine/Core/RallyPoint.cs",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 383,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								352,
-								352
-							]
-						],
-						"settings":
-						{
-							"dfw_side_bar_vis": true,
-							"syntax": "Packages/C#/C#.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 180.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 7,
 					"type": "text"
 				},
 				{
+					"buffer": 16,
+					"file": "Assets/Editor/RegistryEditor.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5160,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								90,
+								90
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C#/C#.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 120.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
 					"buffer": 17,
+					"file": "Assets/Editor/DialogueEditor.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 535,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								216,
+								216
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C#/C#.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 18,
+					"file": "Assets/Editor/Linker.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 262,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								63,
+								63
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C#/C#.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 13,
+					"type": "text"
+				},
+				{
+					"buffer": 19,
+					"file": "/C/Asseco/Unity/CC/CharacterController2D/Assets/TDTK_Free/Scripts/C#/Editor/SpawnEditor.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 14144,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								361,
+								361
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C#/C#.tmLanguage"
+						},
+						"translation.x": -0.0,
+						"translation.y": 240.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 20,
 					"file": "/C/Asseco/Moduł Administracji Regionalnej.htm",
 					"semi_transient": false,
 					"settings":
@@ -1380,11 +1385,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 20,
+					"stack_index": 17,
 					"type": "text"
 				},
 				{
-					"buffer": 18,
+					"buffer": 21,
 					"file": "/C/Asseco/test.htm",
 					"semi_transient": false,
 					"settings":
@@ -1409,11 +1414,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 18,
+					"stack_index": 23,
 					"type": "text"
 				},
 				{
-					"buffer": 19,
+					"buffer": 22,
 					"file": "/C/Asseco/Jaspersoft  FK.01 Zestawienie aktywów.htm",
 					"semi_transient": false,
 					"settings":
@@ -1438,11 +1443,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 17,
+					"stack_index": 22,
 					"type": "text"
 				},
 				{
-					"buffer": 20,
+					"buffer": 23,
 					"file": "/C/Asseco/Liferay-SIK.htm",
 					"semi_transient": false,
 					"settings":
@@ -1467,11 +1472,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 16,
+					"stack_index": 21,
 					"type": "text"
 				},
 				{
-					"buffer": 21,
+					"buffer": 24,
 					"file": "/C/Asseco/MAR.htm",
 					"semi_transient": false,
 					"settings":
@@ -1497,7 +1502,7 @@
 						"translation.y": 32927.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 19,
+					"stack_index": 24,
 					"type": "text"
 				}
 			]
@@ -1553,6 +1558,10 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"resmetalde",
+				"Entities\\Resources\\Scripts\\ResMetalDeposit.cs"
+			],
 			[
 				"unitfa",
 				"Entities\\Scripts\\Entities\\Factories\\UnitFactory.cs"

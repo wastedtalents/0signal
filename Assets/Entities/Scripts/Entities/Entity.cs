@@ -23,7 +23,8 @@ namespace ZS.Characters {
 		public Player _owner; // Actual owner of this object if any.
 		protected string[] _actions = {};
 		protected SelectionType _currentSelection;
-		
+		protected Bounds _selectionBounds;
+
 		protected Vector3 _tempVector;
 		protected GameObject _selection;		
 
@@ -54,6 +55,14 @@ namespace ZS.Characters {
  		   	 ShowSelection();
  		   else if(_selection != null)
  		   	 HideSelection();
+		}
+
+		// Calculates bounds of this object.
+		protected void CalculateBounds() {
+			_selectionBounds = new Bounds(transform.position, Vector3.zero);
+			foreach(var r in GetComponentsInChildren< Renderer >()) {
+				_selectionBounds.Encapsulate(r.bounds);
+			}
 		}
 
 		protected void ShowSelection() {

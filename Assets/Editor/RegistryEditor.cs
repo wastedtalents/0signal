@@ -7,6 +7,7 @@ namespace ZS.Engine.Unity {
 	[CustomEditor(typeof(Registry))]
 	public class RegistryEditor : Editor {
 
+		private const string TECHNICAL_TAB = "Technical Settings";
 		private const string RESOURCE_LIMITS = "Resource Limits";
 		private const string RESOURCE_STARTS = "Resource Initial Vals";
 		private const string CAMERA_TAB = "Camera Settings";
@@ -16,13 +17,14 @@ namespace ZS.Engine.Unity {
 		private const string DEBUG_TAB = "Debug Settings";
 
 		private bool _showResourceLimits, _showResourceStarts, _showCameraTab, _showIconsTab, 
-		_showAudioTab, _showPlayerSettingsTab, _showDebugTab;
+		_showAudioTab, _showPlayerSettingsTab, _showDebugTab, _showTechnicalTab;
 		private Registry _target;
 
 		public override void OnInspectorGUI() {
 			_target = (Registry)target;
 
 			// Create player foldout.
+			CreateTechnicalTab();
 			CreateResourceLimitsTab();
 			CreateResourceStartsTab();
 			CreateCameraTab();
@@ -30,6 +32,18 @@ namespace ZS.Engine.Unity {
 			CreatePlayerSettingsTab();
 			CreateAudioTab();
 			CreateDebugTab();
+		}
+
+		private void CreateTechnicalTab() {
+			_showTechnicalTab = EditorGUILayout.Foldout(_showTechnicalTab, TECHNICAL_TAB);
+			if(_showTechnicalTab) {
+				if(Selection.activeTransform) {
+					_target.defaultPoolSize = EditorGUILayout.IntField("Default pool size : ", _target.defaultPoolSize);
+				}
+			}
+			if(!Selection.activeTransform) {
+				_showTechnicalTab = false;	
+			}
 		}
 
 		private void CreatePlayerSettingsTab() {

@@ -2,6 +2,7 @@
 using ZS.Characters;
 using System.Collections;
 using ZS.Engine;
+using ZS.Resources;
 
 namespace ZS.Entities.Factories {
 
@@ -12,8 +13,14 @@ namespace ZS.Entities.Factories {
      	    base.Start();
         	_actions = new string[] { "Drone" };
 
-        		var obj = ObjectFactory.Instance.GetObjectForType("plant3");
-			Debug.Log(obj);
+        //	ResourceManager.Instance.CreateSingleResource("plant3", new Vector3(10,10,0), 10);
+        	ResourceManager.Instance.CreateResourceDepo(
+			"Metal Depo",
+			"plant3", 
+			12,
+			new Vector3(10,10,0),
+			null,
+			1);
     	}
 
     	// Perform an action.

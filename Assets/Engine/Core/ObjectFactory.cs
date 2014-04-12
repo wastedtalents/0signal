@@ -38,14 +38,33 @@ namespace ZS.Engine {
 			}
 		}
 
+		// Is this a known prefab.
+		public bool IsKnownPrefab(string prefabName) {
+			return _pool.ContainsKey(prefabName);
+		}
+
 		// Get object for type.
-		public GameObject GetObjectForType ( string objectType ) {
+		public GameObject GetObjectForType ( string objectType , bool forceResize  ) {
 			if(_pool.ContainsKey(objectType)) { 
 				// Pick an object.
 				temp = _pool[objectType].FirstOrDefault(o => !o.activeInHierarchy);
 
-				if(temp == null)
-					temp = _pool[objectType][0];
+				if(temp == null) { 
+					if(forceResize) {	
+						temp = pooledPrefabs.SingleOrDefault(s => s.name == objectType);
+
+						var newObj = Instantiate(temp) as GameObject;
+						newObj.name = temp.name;
+						_pool[newObj.name].Add(newObj);
+
+						// Broaden the limit
+						var index = _pool[objectType].FindIndex(s => s.name == objectType);
+						limits[index]++;
+						temp = newObj;
+					}
+					else 
+						temp = _pool[objectType][0];
+				}
 				temp.transform.parent = null;
 				temp.SetActiveRecursively(true);
 				return temp;
@@ -59,6 +78,24 @@ namespace ZS.Engine {
 				obj.SetActiveRecursively(false);
 				obj.transform.parent = _containerObject.transform;
 			}
+		}
+
+		// Resize list.
+		private void Resize(string objectType, int quantity, bool onlyInactive) {
+			var freeItems = _pool[objectType].Count(c => !c.activeInHierarchy);
+			var resizeAmount = onlyInactive ? (quantity - freeItems) : (quantity - _pool[objectType].Count());
+			temp = pooledPrefabs.SingleOrDefault(s => s.name == objectType);
+
+			for ( int n=0; n < resizeAmount; n++) {
+				var newObj = Instantiate(temp) as GameObject;
+				newObj.name = temp.name;
+				newObj.SetActiveRecursively(false);
+				newObj.transform.parent = _containerObject.transform;
+
+				_pool[newObj.name].Add(newObj);
+			}
+
+			Debug.Log("Collection resized to = " + quantity);
 		}
 	}
 }

@@ -23,7 +23,7 @@ namespace ZS.Engine {
 
 		public Player() {
 		}
-	
+
 		// Update is called once per frame
 		void Update () {
 		

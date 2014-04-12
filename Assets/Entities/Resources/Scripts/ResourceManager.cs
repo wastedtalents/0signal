@@ -1,33 +1,77 @@
-﻿// using System;
-// using UnityEngine;
-// using System.Collections.Generic;
-// using ZS.Engine;
+﻿using UnityEngine;
+using System.Collections.Generic;
+using ZS.Engine;
 
-// namespace ZS.Resources {
+namespace ZS.Resources {
 
-// 	// Manager for resources.
-// 	public class ResourceManager : Singleton<ResourceManager>, IInitializable {
-// 		private Dictionary<Type, Func<Resource>> _factory;
-// 		private ObjectPool _objectPool;
+	// Manager for resources.
+	public class ResourceManager : Singleton<ResourceManager> {
+		
+		private Vector3 _tempPosition;
+		private GameObject _depositRef;
 
-// 		public void Initialize() {
-// 			_factory = new Dictionary<Type,Func<Resource>>();
-// 			_factory.Add(typeof(ResMetalDeposit, _ => )))
-// 		}
+		// Maps resource type to sample prefab - change this.
+		private Dictionary<PlayerResourceType, string> _resourceToPrefab;
 
-// 		// Spwans a new resource.
-// 		public Resource Spawn(Type resourceType) {
-// 			if(!_factory.ContainsKey(resourceType))
-// 				throw new ArgumentException("resourceType");
-// 			return  _factory[resourceType]();
-// 		}
+		void Awake() {
+			_resourceToPrefab = new Dictionary<PlayerResourceType, string>();
+		}
 
-// 		// Spawns resource at a given position.
-// 		public Resource SpawnAt(Type resourceType, Vector3 position) {
-// 			var res = Spawn(resourceType);
-// 			res.transform.position = position;
-// 			return res;
-// 		}
-// 	}
+		// Get prefab name for type.
+		private string GetPrefabNameForType(PlayerResourceType resType) {
+			if(!_resourceToPrefab.ContainsKey(resType))
+				throw new System.ArgumentException("[GetPrefabNameForType] - illegal resType " + resType);
+			return _resourceToPrefab[resType];
+		}
 
-// }
+		// Create resource at specific point - dont care which.
+		public void CreateSingleResource(PlayerResourceType resourceType, Vector3 position, float randRadius = 0) {
+			var prefName = GetPrefabNameForType(resourceType);
+			CreateSingleResource(prefName, position, randRadius);
+		}	
+
+		// Create resource at specific point - dont care which.
+		public GameObject CreateSingleResource(string prefabName, Vector3 position, float randRadius = 0,
+			bool forceResize = false, bool isChild = false) {
+			var element = ObjectFactory.Instance.GetObjectForType(prefabName, forceResize);
+			if(element == null)
+				throw new System.ArgumentException("[CreteSingleResource] No such prefab - " + prefabName);
+			_tempPosition = position;
+			if(randRadius != 0) {
+				var r = randRadius / 2;
+				_tempPosition.x += Random.value * randRadius - r;
+				_tempPosition.y += Random.value * randRadius - r;
+			}
+			if(!isChild)
+				element.transform.position = _tempPosition;
+			else
+				element.transform.localPosition = _tempPosition;
+			return element;
+		}
+
+		// Create a resource depo.
+		public void CreateResourceDepo(
+			string depoName,
+			string prefabName, 
+			int quantity,
+			Vector3 position,
+			string depoComponentClass = null,
+			float spread = 0) {
+
+			// Instantiate a prefab deposit and add itms to it.
+			if(!ObjectFactory.Instance.IsKnownPrefab(prefabName))
+				throw new System.ArgumentException("[CreateResourceDepo] - Unknown prefab - " + prefabName);
+
+			var newObj = new GameObject(depoName);
+			if(!System.String.IsNullOrEmpty(depoComponentClass) != null)
+				newObj.AddComponent(depoComponentClass);
+			newObj.transform.position = position;
+
+			for(int i=0;i< quantity; i++) {
+				var element = CreateSingleResource(prefabName, Vector3.zero, spread, true, true);
+				element.transform.parent = newObj.transform;
+			}
+		}
+	}
+
+}

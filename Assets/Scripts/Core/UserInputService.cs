@@ -50,7 +50,9 @@ namespace ZS.Engine {
 			        	return;
 			        }
 
-			        var hitEntity = _hitObject.transform.root.GetComponent< Entity >();
+//			        var hitEntity = _hitObject.transform.root.GetComponent< Entity >();
+			        var hitEntity = _hitObject.GetComponent< Entity >();
+
 			        // Object hit was interactive.
 			        if(hitEntity != null) { 
 				        // If this entity is not already selected.

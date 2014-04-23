@@ -1,0 +1,327 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"Phy",
+				"Physics2D	[class]"
+			],
+			[
+				"Gam",
+				"GameObject	*(name)"
+			],
+			[
+				"instan",
+				"instantiate	Network.*(prefab, position, rotation, group)"
+			],
+			[
+				"gui",
+				"gui	GUI.Button(position,content,style)"
+			],
+			[
+				"_tar",
+				"_targetPosition"
+			],
+			[
+				"rotate",
+				"rotateSpeed"
+			],
+			[
+				"_h",
+				"_hitObject"
+			],
+			[
+				"hit",
+				"hitPoint"
+			],
+			[
+				"nwe",
+				"newState"
+			],
+			[
+				"_co",
+				"_findColliders"
+			],
+			[
+				"Coll",
+				"Collider2D"
+			],
+			[
+				"COll",
+				"Collider2D"
+			],
+			[
+				"_",
+				"_currentSelection"
+			],
+			[
+				"_hit",
+				"_hitEntity"
+			],
+			[
+				"player",
+				"playerType"
+			],
+			[
+				"selector",
+				"selectorPrefab"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"Install",
+				"Package Control: Install Package"
+			],
+			[
+				"install ",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 1224.0
+	},
+	"console":
+	{
+		"height": 153.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/HUD/Cursors/Harvest.meta",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Light2D/Samples/Scripts/Orbit_VLS.cs",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/HUD/Cursors/Move.meta",
+		"/C/Users/jaroosh/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Engine/Core/IInitializable.cs",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Characters/Scripts/Entities/Inanimate.meta",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Engine/Peripherials/InputService.cs",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Engine/Peripherials/InputService.cs.meta",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Light2D/Samples/Scripts/EventSample_VLS.cs",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Prefabs.meta",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Light2D/Samples/Art/Prefabs/Rock1_0.prefab",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Characters/Scripts/Entities/Entity.cs",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Engine/Utilities/LookHelper.cs",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Engine/Cam/CameraController.cs",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Characters/Scripts/EnemyController.cs",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Characters/Scripts/Entities/Unit.cs",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Engine/GUI/GUIService.cs",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Characters/Scripts/PlayerAvatarController.cs",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Engine/Core/Registry.cs",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Engine/Core/Player.cs",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Engine/Core/SelectionType.cs",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/HUD/Scripts/HUDManager.cs",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Characters/Scripts/Entities/DeadObject.cs",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Characters/Scripts/Entities/Inanimate/Plant.cs",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Engine/Core/GameService.cs",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Engine/Cam/CameraManager.cs",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Prefabs/Weapons/BulletScript.cs",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Engine/Core/Singleton.cs",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Engine/Core/UserService.cs",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Characters/Scripts/Entities/Player.cs",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Characters/Controllers/PlayerController.controller",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Characters/Scripts/PlayerController.cs",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Characters/Scripts/PlayerControllerExt.cs",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Engine/Peripherials/InputManager.cs",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Engine/GUI/SelectionManager.cs",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Engine/Factories/SelectorFactory.cs",
+		"/G/Devel/Games/ZeroSignal/sublime.sublime-project",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Engine/Registry.cs",
+		"/C/Users/jaroosh/Documents/my.cs",
+		"/G/Devel/Games/ZeroSignal/zerosignal/Assets/Engine/GameService.cs"
+	],
+	"find":
+	{
+		"height": 27.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"MovingUnit",
+			"protected",
+			"_owner",
+			"Start",
+			"MovingUnit",
+			"transform.rotation",
+			"\"HIT",
+			"Debug.Log",
+			"SmoothLookAt",
+			"Debug.LOg",
+			"showCursor",
+			"Hide",
+			"_targetRotation",
+			"Time",
+			"Debug.Log",
+			"SmoothLookAt",
+			"\"LG",
+			"\"LOG",
+			"\"RG",
+			"Changing",
+			"\"CHAGING ",
+			"\"LG\"",
+			"CursorState.Select",
+			"SetCursorState",
+			"Debug.Log",
+			"SelectionType",
+			"GROUND_NAME",
+			"Background",
+			"FindHitObject",
+			"CursorState",
+			"GetSelection",
+			"if(xpos >= 0 && xpos <",
+			"player",
+			"\n			 ",
+			"_hitObject",
+			"_tempVector",
+			"PlayerController",
+			"username",
+			"HandleBullets",
+			"MouseActivity",
+			"_moveX",
+			"InputActivity",
+			"SelectionType",
+			"SelectorFactory",
+			"SelectionFactory",
+			"FindIn",
+			"MouseActivity",
+			"UpdatePosition",
+			"if(xpos <= 0 && xpos <"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"PlayerAvatarController",
+			"SelectionManager"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.unsaved_changes":
+	{
+		"height": 124.0
+	},
+	"project": "scriptsfile.sublime-project",
+	"replace":
+	{
+		"height": 50.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"harvester",
+				"G:\\Devel\\Games\\0Signal_CurrentBranch\\Assets\\Scripts\\Entities\\Harvester.cs"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 35.0,
+		"selected_items":
+		[
+		],
+		"width": 392.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

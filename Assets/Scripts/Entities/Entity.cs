@@ -32,6 +32,10 @@ namespace ZS.Characters {
 			get { return _owner; }
 		}
 
+		public Bounds SelectionBounds {
+			get  { return _selectionBounds; }
+		}
+
 		public Entity(string name) : this() { 
 			displayName = name;
 		}
@@ -87,6 +91,7 @@ namespace ZS.Characters {
 		}
 
 		// Mouse clicked at point.
+		// IE. I am SELECTED and someone clicked right click on an ENTITY being at HITPOINT.
 		public virtual void ActionInitiated(GameObject hitObject, Entity entity, Vector3 hitPoint) {
 			 // If were currently SELECTED as command mode, we can do stuff!
 			 if(_currentSelection == SelectionType.Command && hitObject != null 

@@ -81,12 +81,8 @@ namespace ZS.Engine {
 			else if(Registry.Instance.hudManager.PointInClientBounds(InputService.Instance.MousePosition)) {
 			    _hitObject = CameraManager.Instance.FindHitObject(InputService.Instance.MousePosition, out _tempVector);
 
-				var hitEntity = _hitObject == null ? null : _hitObject.transform.root.GetComponent< Entity >();
-			    
-				DebugUtil.LogComponentsOf(_hitObject);
-				//Debug.Log("HE " + hitEntity);
-
-
+				// var hitEntity = _hitObject == null ? null : _hitObject.transform.root.GetComponent< Entity >();
+			    var hitEntity = _hitObject == null ? null : _hitObject.GetComponent< Entity >();
 			    if(hitEntity == null && _hitObject.tag != Registry.GROUND_NAME)
 			       	return;
 

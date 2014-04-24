@@ -16,7 +16,7 @@ namespace ZS.Entities.Factories {
         //	ResourceManager.Instance.CreateSingleResource("plant3", new Vector3(10,10,0), 10);
         	ResourceManager.Instance.CreateResourceDepo(
 			"Metal Depo",
-			"plant3", 
+			"resMetal", 
 			12,
 			new Vector3(10,10,0),
 			null,

@@ -11,7 +11,7 @@ namespace ZS.Entities.Factories {
 
 		protected override void Start () {
      	    base.Start();
-        	_actions = new string[] { "Drone" };
+        	_actions = new string[] { Registry.Commands.CREATE_DRONE };
 
         //	ResourceManager.Instance.CreateSingleResource("plant3", new Vector3(10,10,0), 10);
         	ResourceManager.Instance.CreateResourceDepo(
@@ -25,9 +25,10 @@ namespace ZS.Entities.Factories {
 
     	// Perform an action.
     	public override void PerformAction(GameObject targetObject, Entity targetEntity, string actionToPerform) {
-    		base.PerformAction(targetObject, targetEntity, actionToPerform);
+            base.PerformAction(targetObject, targetEntity, actionToPerform);
     		// Whatever the action - create a new unit.
-    		CreateUnit(actionToPerform);
+            if(actionToPerform == Registry.Commands.CREATE_DRONE)
+    		  CreateUnit(actionToPerform);
     	}
 
 	}

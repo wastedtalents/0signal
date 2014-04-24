@@ -255,6 +255,7 @@ namespace ZS.HUD {
 		        if(action != null) {
 		        	if (GUI.Button(pos, action)) {
                 		if(GameService.Instance.selectedObject != null) {
+                			Debug.Log("AAA");
                 			GameService.Instance.selectedObject.PerformAction(null, null, actions[i]);
                 		}
             		}

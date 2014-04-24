@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System;
+using System.Collections.Generic;
 
 namespace ZS.Engine.Utilities {
 
@@ -11,6 +12,13 @@ namespace ZS.Engine.Utilities {
 
 		public static string V2s(Vector2 v) {
 			return System.String.Format("x : {0} , y : {1}", v.x, v.y);
+		}
+
+		public static void LogComponentsOf(GameObject obj) {
+			var components = new List<Component>();
+            foreach(var component in obj.GetComponents<Component>()) {
+            	Debug.Log(String.Format("[{0}] - {1}" , obj.name, component));
+            }
 		}
 
 	}

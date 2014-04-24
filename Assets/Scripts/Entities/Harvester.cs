@@ -39,8 +39,8 @@ namespace ZS.Characters {
 		}
 
 		// Action was initiated.
-		public override void ActionInitiated(GameObject hitObject, Entity entity, Vector3 hitPoint) {
-			base.ActionInitiated(hitObject, entity, hitPoint);
+		public override void ActionInitiated(GameObject hitObject, Entity entity, Vector3 hitPoint) {		
+			base.ActionInitiated(hitObject, entity, hitPoint);	
    			//only handle input if owned by a human player
 			  if(_owner != null && _owner.playerType == PlayerType.Current && _currentSelection != SelectionType.NotSelected) {
               if(hitObject.tag == Registry.GROUND_NAME && hitPoint != Registry.Instance.invalidHitPoint) {
@@ -56,14 +56,14 @@ namespace ZS.Characters {
 					}
 				} 
 				else
-				StopHarvest();
+					StopHarvest();
 			}
 		}
 
 		// Start harvesting.
 		private void StartHarvest(Resource resource) {
 			_resourceDeposit = resource;
-			
+
 			// Start moving towards an object.
 			StartMoving(resource.transform.position, resource.gameObject);
 			// If thats a new kinf of resource- reload.

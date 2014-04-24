@@ -13,6 +13,11 @@ namespace ZS.Engine {
 
 		}
 
+		public static class Commands { 
+			public const string CREATE_DRONE = "Drone";
+		}
+
+		public const string ENTITIES_LAYER = "Entities";
 		public const string GLOBAL_POOL_NAME = "GlobalObjectPool";
 		public const string GROUND_NAME = "Background";
 		public readonly KeyCode TOGGLE_OPS_KEY = KeyCode.T;

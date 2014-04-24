@@ -6,6 +6,7 @@ using ZS.Engine.Cam;
 using ZS.Engine.Peripherials;
 using ZS.HUD;
 using ZS.Engine.Audio;
+using ZS.Engine.Utilities;
 
 namespace ZS.Engine { 
 
@@ -81,6 +82,11 @@ namespace ZS.Engine {
 			    _hitObject = CameraManager.Instance.FindHitObject(InputService.Instance.MousePosition, out _tempVector);
 
 				var hitEntity = _hitObject == null ? null : _hitObject.transform.root.GetComponent< Entity >();
+			    
+				DebugUtil.LogComponentsOf(_hitObject);
+				//Debug.Log("HE " + hitEntity);
+
+
 			    if(hitEntity == null && _hitObject.tag != Registry.GROUND_NAME)
 			       	return;
 

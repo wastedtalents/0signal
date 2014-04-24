@@ -82,6 +82,8 @@ namespace ZS.Entities.Factories {
 
 		// Creates an unit.
 		protected void CreateUnit(string unitName) {
+			Debug.Log("AI");
+			
 			_buildQueue.Enqueue(unitName);
 		}
 

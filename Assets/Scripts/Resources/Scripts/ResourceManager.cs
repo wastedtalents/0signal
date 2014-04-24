@@ -63,6 +63,7 @@ namespace ZS.Resources {
 				throw new System.ArgumentException("[CreateResourceDepo] - Unknown prefab - " + prefabName);
 
 			var newObj = new GameObject(depoName);
+			newObj.layer = LayerMask.NameToLayer( Registry.ENTITIES_LAYER );
 			if(!System.String.IsNullOrEmpty(depoComponentClass) != null)
 				newObj.AddComponent(depoComponentClass);
 			newObj.transform.position = position;
@@ -70,6 +71,10 @@ namespace ZS.Resources {
 			for(int i=0;i< quantity; i++) {
 				var element = CreateSingleResource(prefabName, Vector3.zero, spread, true, true);
 				element.transform.parent = newObj.transform;
+				element.layer = LayerMask.NameToLayer( Registry.ENTITIES_LAYER );
+				
+				// Add resource component depending on what it is.
+				element.AddComponent("ResMetal");
 			}
 		}
 	}

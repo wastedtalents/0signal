@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace ZS.Resources { 
 
-	public class ResMetal : MonoBehaviour {
+	public class ResMetal : Resource {
 	}
 
 }

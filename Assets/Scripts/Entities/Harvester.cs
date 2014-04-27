@@ -3,6 +3,7 @@ using ZS.Engine;
 using System.Collections;
 using ZS.Resources;
 using ZS.HUD;
+using ZS.Engine.Utilities;
 
 namespace ZS.Characters { 
 
@@ -43,7 +44,7 @@ namespace ZS.Characters {
 			base.ActionInitiated(hitObject, entity, hitPoint);	
    			//only handle input if owned by a human player
 			  if(_owner != null && _owner.playerType == PlayerType.Current && _currentSelection != SelectionType.NotSelected) {
-              if(hitObject.tag == Registry.GROUND_NAME && hitPoint != Registry.Instance.invalidHitPoint) {
+              if(hitObject.tag != Registry.GROUND_NAME && hitPoint != Registry.Instance.invalidHitPoint) {
 					// If its a resource - go fo' it.
 					var resource = hitObject.transform.parent.GetComponent< Resource >();
 					if(resource != null && !resource.isDepleted()) {
@@ -63,6 +64,8 @@ namespace ZS.Characters {
 		// Start harvesting.
 		private void StartHarvest(Resource resource) {
 			_resourceDeposit = resource;
+
+			Debug.Log("HARVERSTER STARTED");
 
 			// Start moving towards an object.
 			StartMoving(resource.transform.position, resource.gameObject);

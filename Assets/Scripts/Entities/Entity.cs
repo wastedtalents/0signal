@@ -100,7 +100,7 @@ namespace ZS.Characters {
 	        	if(entity != null) { 
 	        		// GetActions
 	        		// Perform action
-	        		entity.PerformAction(hitObject, entity, Registry.ACTION_ATTACK);
+	        		//entity.PerformAction(hitObject, entity, Registry.ACTION_ATTACK);
 	        	}
 			 }
 		}

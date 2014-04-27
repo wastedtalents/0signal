@@ -64,6 +64,8 @@ namespace ZS.Resources {
 
 			var newObj = new GameObject(depoName);
 			newObj.layer = LayerMask.NameToLayer( Registry.ENTITIES_LAYER );
+			newObj.AddComponent("ResMetalDeposit");
+
 			if(!System.String.IsNullOrEmpty(depoComponentClass) != null)
 				newObj.AddComponent(depoComponentClass);
 			newObj.transform.position = position;
